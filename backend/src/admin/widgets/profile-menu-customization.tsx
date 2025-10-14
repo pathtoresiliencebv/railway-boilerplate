@@ -53,7 +53,7 @@ const ProfileMenuCustomizationWidget = () => {
 
 // Widget configuration - inject into the admin layout
 export const config = defineWidgetConfig({
-  zone: "admin.layout.after",
+  zone: "login.after",
 })
 
 export default ProfileMenuCustomizationWidget

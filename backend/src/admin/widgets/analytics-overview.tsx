@@ -123,7 +123,7 @@ const AnalyticsOverviewWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "dashboard.before",
+  zone: "login.before",
 })
 
 export default AnalyticsOverviewWidget

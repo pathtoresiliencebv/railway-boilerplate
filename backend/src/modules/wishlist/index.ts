@@ -1,4 +1,4 @@
-import { WishlistService } from './service'
+import WishlistService from './service'
 
 export const WISHLIST_MODULE = 'wishlistService'
 

@@ -1,4 +1,4 @@
-import { SavedPaymentMethodsService } from './service'
+import SavedPaymentMethodsService from './service'
 
 export const SAVED_PAYMENT_METHODS_MODULE = 'savedPaymentMethodsService'
 

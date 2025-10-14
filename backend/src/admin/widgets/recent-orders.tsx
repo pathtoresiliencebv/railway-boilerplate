@@ -144,7 +144,7 @@ const RecentOrdersWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "dashboard.after",
+  zone: "login.after",
 })
 
 export default RecentOrdersWidget
