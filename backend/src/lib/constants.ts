@@ -100,3 +100,18 @@ export const WORKER_MODE =
  * Disable Admin
  */
 export const SHOULD_DISABLE_ADMIN = process.env.MEDUSA_DISABLE_ADMIN === 'true'
+
+/**
+ * OAuth Providers for Admin Authentication
+ */
+export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+export const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+export const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+
+/**
+ * Phone Auth (for phone-auth module)
+ */
+export const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
+export const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
+export const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;

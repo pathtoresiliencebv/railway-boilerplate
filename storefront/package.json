@@ -24,6 +24,7 @@
   "dependencies": {
     "@headlessui/react": "^1.6.1",
     "@hookform/error-message": "^2.0.0",
+    "@kinde-oss/kinde-auth-nextjs": "^2.9.2",
     "@medusajs/js-sdk": "preview",
     "@medusajs/types": "preview",
     "@medusajs/ui": "preview",

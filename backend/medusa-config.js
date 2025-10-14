@@ -21,7 +21,12 @@ import {
   MINIO_SECRET_KEY,
   MINIO_BUCKET,
   MEILISEARCH_HOST,
-  MEILISEARCH_ADMIN_KEY
+  MEILISEARCH_ADMIN_KEY,
+  // OAuth Providers
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET
 } from 'lib/constants';
 
 loadEnv(process.env.NODE_ENV, process.cwd());
@@ -50,6 +55,52 @@ const medusaConfig = {
     disable: SHOULD_DISABLE_ADMIN,
   },
   modules: [
+    // Core Medusa v2.10.2 Modules (automatically enabled):
+    // ✅ API Key Module - Built-in authentication and resource scoping
+    // ✅ Auth Module - User authentication and authorization  
+    // ✅ Cart Module - Shopping cart functionality
+    // ✅ Currency Module - Multi-currency support
+    // ✅ Customer Module - Customer management
+    // ✅ Fulfillment Module - Order fulfillment
+    // ✅ Inventory Module - Stock management
+    // ✅ Order Module - Order processing
+    // ✅ Payment Module - Payment processing (configured with Stripe below)
+    // ✅ Pricing Module - Dynamic pricing
+    // ✅ Product Module - Product catalog
+    // ✅ Promotion Module - Discounts and promotions
+    // ✅ Region Module - Geographic regions
+    // ✅ Sales Channel Module - Multi-channel sales
+    // ✅ Stock Location Module - Warehouse management
+    // ✅ Store Module - Store configuration
+    // ✅ Tax Module - Tax calculations
+    // ✅ User Module - Admin user management
+
+    // OAuth Authentication Module
+    ...(GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET || GITHUB_CLIENT_ID && GITHUB_CLIENT_SECRET ? [{
+      key: Modules.AUTH,
+      resolve: '@medusajs/auth',
+      options: {
+        providers: [
+          ...(GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET ? [{
+            resolve: '@medusajs/auth-google',
+            id: 'google',
+            options: {
+              clientId: GOOGLE_CLIENT_ID,
+              clientSecret: GOOGLE_CLIENT_SECRET,
+            }
+          }] : []),
+          ...(GITHUB_CLIENT_ID && GITHUB_CLIENT_SECRET ? [{
+            resolve: '@medusajs/auth-github',
+            id: 'github',
+            options: {
+              clientId: GITHUB_CLIENT_ID,
+              clientSecret: GITHUB_CLIENT_SECRET,
+            }
+          }] : []),
+        ]
+      }
+    }] : []),
+
     {
       key: Modules.FILE,
       resolve: '@medusajs/file',
@@ -132,7 +183,29 @@ const medusaConfig = {
           },
         ],
       },
-    }] : [])
+    }] : []),
+
+    // Custom Feature Modules
+    {
+      key: 'abandonedCartService',
+      resolve: './src/modules/abandoned-cart',
+    },
+    {
+      key: 'giftMessageService', 
+      resolve: './src/modules/gift-message',
+    },
+    {
+      key: 'loyaltyPointsService',
+      resolve: './src/modules/loyalty-points',
+    },
+    {
+      key: 'wishlistService',
+      resolve: './src/modules/wishlist',
+    },
+    {
+      key: 'productReviewsService',
+      resolve: './src/modules/product-reviews',
+    }
   ],
   plugins: [
   ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
