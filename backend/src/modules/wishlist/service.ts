@@ -11,7 +11,7 @@ export default class WishlistService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const wishlist = customer.metadata?.wishlist || []
+      const wishlist: string[] = (customer.metadata?.wishlist as string[]) || []
       
       if (!wishlist.includes(productId)) {
         wishlist.push(productId)
@@ -36,7 +36,7 @@ export default class WishlistService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const wishlist = customer.metadata?.wishlist || []
+      const wishlist: string[] = (customer.metadata?.wishlist as string[]) || []
       const updatedWishlist = wishlist.filter((id: string) => id !== productId)
       
       await customerModuleService.updateCustomers(customerId, {
@@ -59,7 +59,7 @@ export default class WishlistService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const wishlistIds = customer.metadata?.wishlist || []
+      const wishlistIds: string[] = (customer.metadata?.wishlist as string[]) || []
       
       const products = await Promise.all(
         wishlistIds.map(async (productId: string) => {

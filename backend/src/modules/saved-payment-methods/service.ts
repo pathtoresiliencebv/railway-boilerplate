@@ -65,7 +65,7 @@ export default class SavedPaymentMethodsService {
 
       // Get customer's existing payment methods
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const savedPaymentMethods = customer.metadata?.saved_payment_methods || []
+      const savedPaymentMethods: SavedPaymentMethod[] = customer.metadata?.saved_payment_methods || []
 
       // If this is set as default, unset other defaults
       if (savedPaymentMethod.isDefault) {
@@ -96,7 +96,7 @@ export default class SavedPaymentMethodsService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      return customer.metadata?.saved_payment_methods || []
+      return (customer.metadata?.saved_payment_methods as SavedPaymentMethod[]) || []
     } catch (error) {
       console.error('Error retrieving customer payment methods:', error)
       return []
@@ -113,7 +113,7 @@ export default class SavedPaymentMethodsService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const savedPaymentMethods = customer.metadata?.saved_payment_methods || []
+      const savedPaymentMethods: SavedPaymentMethod[] = (customer.metadata?.saved_payment_methods as SavedPaymentMethod[]) || []
 
       // Find and update the payment method
       const paymentMethod = savedPaymentMethods.find((method: SavedPaymentMethod) => method.id === paymentMethodId)
@@ -144,7 +144,7 @@ export default class SavedPaymentMethodsService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const savedPaymentMethods = customer.metadata?.saved_payment_methods || []
+      const savedPaymentMethods: SavedPaymentMethod[] = (customer.metadata?.saved_payment_methods as SavedPaymentMethod[]) || []
 
       // Remove the payment method
       const updatedMethods = savedPaymentMethods.filter((method: SavedPaymentMethod) => method.id !== paymentMethodId)
@@ -171,7 +171,7 @@ export default class SavedPaymentMethodsService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const savedPaymentMethods = customer.metadata?.saved_payment_methods || []
+      const savedPaymentMethods: SavedPaymentMethod[] = (customer.metadata?.saved_payment_methods as SavedPaymentMethod[]) || []
 
       const paymentMethod = savedPaymentMethods.find((method: SavedPaymentMethod) => method.id === paymentMethodId)
       if (!paymentMethod) {
@@ -210,7 +210,7 @@ export default class SavedPaymentMethodsService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const savedPaymentMethods = customer.metadata?.saved_payment_methods || []
+      const savedPaymentMethods: SavedPaymentMethod[] = (customer.metadata?.saved_payment_methods as SavedPaymentMethod[]) || []
 
       const paymentMethod = savedPaymentMethods.find((method: SavedPaymentMethod) => method.id === paymentMethodId)
       if (!paymentMethod) {
