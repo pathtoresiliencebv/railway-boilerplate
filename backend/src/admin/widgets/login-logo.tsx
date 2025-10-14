@@ -1,4 +1,4 @@
-import { defineWidgetConfig } from "@medusajs/admin-shared"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import React from "react"
 
 // Custom login logo widget
