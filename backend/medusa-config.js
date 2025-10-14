@@ -249,6 +249,10 @@ const medusaConfig = {
     {
       key: 'savedPaymentMethodsService',
       resolve: './src/modules/saved-payment-methods',
+    },
+    {
+      key: 'analyticsService',
+      resolve: './src/modules/analytics',
     }
   ],
   plugins: [
