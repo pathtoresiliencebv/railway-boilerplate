@@ -16,10 +16,13 @@
 </p>
 
 <h2 align="center">
-  Prebaked medusajs 2.0 monorepo
+  Railway Boilerplate - MedusaJS 2.0 Monorepo
 </h2>
 <h4 align="center">
-  Backend + Storefront + postgres + redis + MinIO + MeiliSearch
+  Production-ready ecommerce platform optimized for Railway deployment
+</h4>
+<h4 align="center">
+  Backend + Storefront + PostgreSQL + Redis + MinIO + MeiliSearch
 </h4>
 
 <h2 align="center">
@@ -34,8 +37,17 @@
 <p align="center">
 Combine Medusa's modules for your commerce backend with the newest Next.js 14 features for a performant storefront.</p>
 
-## About this boilerplate
-This boilerplate is a monorepo consisting of the officially released MedusaJS 2.0 backend and storefront application. It is a pre-configured, ready-to-deploy solution, modified for seamless deployment on [railway.app](https://railway.app?referralCode=-Yg50p).
+## About Railway Boilerplate
+This Railway Boilerplate is a production-ready monorepo consisting of the officially released MedusaJS 2.0 backend and storefront application. It is a pre-configured, optimized solution specifically designed for seamless deployment on [Railway.app](https://railway.app?referralCode=-Yg50p).
+
+**Key Features:**
+- 🚀 **One-click deployment** on Railway with pre-configured services
+- 🛒 **Complete ecommerce solution** with MedusaJS 2.0 backend
+- 🎨 **Modern Next.js 14 storefront** with App Router
+- 🗄️ **Production databases** (PostgreSQL, Redis, MinIO, MeiliSearch)
+- 📧 **Email notifications** with Resend integration
+- 💳 **Payment processing** with Stripe integration
+- 🔍 **Advanced search** with MeiliSearch
 
 Updated: to `version 2.10.2` 🥳
 
@@ -45,6 +57,66 @@ Updated: to `version 2.10.2` 🥳
 - Resend email integration [Watch setup video](https://youtu.be/pbdZm26YDpE?si=LQTHWeZMLD4w3Ahw) - special thanks to [aleciavogel](https://github.com/aleciavogel) for Resend notification service, and react-email implementation! [README](backend/src/modules/email-notifications/README.md)
 - Stripe payment service: [Watch setup video](https://youtu.be/dcSOpIzc1Og)
 - Meilisearch integration by [Rokmohar](https://github.com/rokmohar/medusa-plugin-meilisearch): Adds powerful product search capabilities to your store. When deployed on Railway using the template, MeiliSearch is automatically configured. (For non-railway'ers: [Watch setup video](https://youtu.be/hrXcc5MjApI))
+
+# 🚀 Railway Deployment
+
+## Quick Start (Recommended)
+1. **Click the Railway template button above** for one-click deployment
+2. **Configure your environment variables** in Railway dashboard
+3. **Deploy and go live** - everything is pre-configured!
+
+## Manual Railway Setup
+If you prefer manual setup:
+
+1. **Create a new Railway project**
+2. **Connect this repository** to Railway
+3. **Add required services:**
+   - PostgreSQL database
+   - Redis cache
+   - MinIO storage
+   - MeiliSearch
+4. **Configure environment variables** (see Environment Variables section)
+5. **Deploy both backend and storefront**
+
+## Environment Variables for Railway
+
+### Backend Environment Variables
+```bash
+# Database
+DATABASE_URL=postgresql://username:password@host:port/database
+
+# Redis
+REDIS_URL=redis://username:password@host:port
+
+# MinIO Storage
+MINIO_ENDPOINT=your-minio-endpoint
+MINIO_ACCESS_KEY=your-access-key
+MINIO_SECRET_KEY=your-secret-key
+MINIO_BUCKET=medusa-media
+
+# MeiliSearch
+MEILISEARCH_HOST=your-meilisearch-host
+MEILISEARCH_API_KEY=your-api-key
+
+# Email (Resend)
+RESEND_API_KEY=your-resend-api-key
+
+# Stripe
+STRIPE_API_KEY=your-stripe-secret-key
+STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+```
+
+### Storefront Environment Variables
+```bash
+# Backend URL
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://your-backend.railway.app
+
+# Stripe
+NEXT_PUBLIC_STRIPE_KEY=your-stripe-publishable-key
+
+# MinIO
+NEXT_PUBLIC_MINIO_ENDPOINT=your-minio-endpoint
+```
 
 # Backend
 

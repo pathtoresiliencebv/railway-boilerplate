@@ -4,16 +4,23 @@
     <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
     <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
     <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+  </picture>
+  </a>
+  <a href="https://railway.app/template/gkU-27?referralCode=-Yg50p">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://railway.app/brand/logo-light.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://railway.app/brand/logo-dark.svg">
+      <img alt="Railway logo" src="https://railway.app/brand/logo-light.svg" width=100>
     </picture>
   </a>
 </p>
 
 <h1 align="center">
-  Medusa Next.js Starter Template
+  Railway Boilerplate - Next.js 14 Storefront
 </h1>
 
 <p align="center">
-Combine Medusa's modules for your commerce backend with the newest Next.js 14 features for a performant storefront.</p>
+Production-ready Next.js 14 storefront optimized for Railway deployment with MedusaJS 2.0 backend.</p>
 
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
@@ -27,9 +34,23 @@ Combine Medusa's modules for your commerce backend with the newest Next.js 14 fe
   </a>
 </p>
 
-### Prerequisites
+## 🚀 Railway Deployment (Recommended)
 
-To use the [Next.js Starter Template](https://medusajs.com/nextjs-commerce/), you should have a Medusa server running locally on port 9000.
+### One-Click Deploy
+1. Use the Railway template for automatic setup
+2. Backend and storefront are deployed together
+3. All environment variables are pre-configured
+
+### Manual Railway Setup
+1. Deploy the backend service first
+2. Deploy the storefront service
+3. Configure environment variables (see below)
+4. Connect services in Railway dashboard
+
+## 🛠️ Local Development Setup
+
+### Prerequisites
+To use this storefront, you should have a Medusa server running locally on port 9000.
 For a quick setup, run:
 
 ```shell
@@ -70,6 +91,34 @@ Features include:
   - Local file fallback
 
 
+## 🔧 Environment Variables
+
+### Required Variables
+```bash
+# Backend URL (Railway backend URL)
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://your-backend.railway.app
+
+# Stripe (for payments)
+NEXT_PUBLIC_STRIPE_KEY=your-stripe-publishable-key
+
+# MinIO (for file storage)
+NEXT_PUBLIC_MINIO_ENDPOINT=your-minio-endpoint
+```
+
+### Optional Variables
+```bash
+# PayPal (for payments)
+NEXT_PUBLIC_PAYPAL_CLIENT_ID=your-paypal-client-id
+
+# Search (MeiliSearch)
+NEXT_PUBLIC_SEARCH_APP_ID=your-search-app-id
+NEXT_PUBLIC_SEARCH_API_KEY=your-search-api-key
+NEXT_PUBLIC_INDEX_NAME=products
+
+# Default region
+NEXT_PUBLIC_DEFAULT_REGION=us
+```
+
 # Quickstart
 
 ### Setting up the environment variables
@@ -77,8 +126,8 @@ Features include:
 Navigate into your projects directory and get your environment variables ready:
 
 ```shell
-cd nextjs-starter-medusa/
-mv .env.template .env.local
+cd storefront/
+# Create .env.local file with the variables above
 ```
 
 ### Install dependencies

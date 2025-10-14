@@ -1,7 +1,7 @@
 {
-  "name": "medusa-2.0-boilerplate-backend",
-  "version": "0.0.2",
-  "description": "A Prebaked Medusa 2.0 backend",
+  "name": "railway-boilerplate-backend",
+  "version": "1.0.0",
+  "description": "Railway Boilerplate - MedusaJS 2.0 Backend optimized for Railway deployment",
   "author": "Rasmus Puls",
   "license": "MIT",
   "keywords": [
