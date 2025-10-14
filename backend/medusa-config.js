@@ -205,6 +205,50 @@ const medusaConfig = {
     {
       key: 'productReviewsService',
       resolve: './src/modules/product-reviews',
+    },
+    {
+      key: 'agenticCommerceService',
+      resolve: './src/modules/agentic-commerce',
+    },
+    {
+      key: 'customItemPricingService',
+      resolve: './src/modules/custom-item-pricing',
+    },
+    {
+      key: 'invoiceGenerationService',
+      resolve: './src/modules/invoice-generation',
+    },
+    {
+      key: 'firstPurchaseDiscountService',
+      resolve: './src/modules/first-purchase-discount',
+    },
+    {
+      key: 'metaProductFeedService',
+      resolve: './src/modules/meta-product-feed',
+    },
+    {
+      key: 'newsletterService',
+      resolve: './src/modules/newsletter',
+    },
+    {
+      key: 'phoneAuthService',
+      resolve: './src/modules/phone-auth',
+    },
+    {
+      key: 'productBuilderService',
+      resolve: './src/modules/product-builder',
+    },
+    {
+      key: 'quoteManagementService',
+      resolve: './src/modules/quote-management',
+    },
+    {
+      key: 'reorderService',
+      resolve: './src/modules/reorder',
+    },
+    {
+      key: 'savedPaymentMethodsService',
+      resolve: './src/modules/saved-payment-methods',
     }
   ],
   plugins: [
