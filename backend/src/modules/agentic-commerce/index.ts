@@ -1,5 +1,8 @@
+import { Module } from "@medusajs/framework/utils"
 import AgenticCommerceService from './service'
 
-export const AGENTICCOMMERCESERVICE_MODULE = 'agentic-commerceService'
+export const AGENTIC_COMMERCE_MODULE = "agenticCommerceService"
 
-export default AgenticCommerceService
+export default Module(AGENTIC_COMMERCE_MODULE, {
+  service: AgenticCommerceService,
+})

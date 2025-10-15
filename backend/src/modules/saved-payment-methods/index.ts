@@ -1,5 +1,8 @@
+import { Module } from "@medusajs/framework/utils"
 import SavedPaymentMethodsService from './service'
 
-export const SAVEDPAYMENTMETHODSSERVICE_MODULE = 'saved-payment-methodsService'
+export const SAVED_PAYMENT_METHODS_MODULE = "savedPaymentMethodsService"
 
-export default SavedPaymentMethodsService
+export default Module(SAVED_PAYMENT_METHODS_MODULE, {
+  service: SavedPaymentMethodsService,
+})

@@ -1,5 +1,8 @@
+import { Module } from "@medusajs/framework/utils"
 import ReorderService from './service'
 
-export const REORDERSERVICE_MODULE = 'reorderService'
+export const REORDER_MODULE = "reorderService"
 
-export default ReorderService
+export default Module(REORDER_MODULE, {
+  service: ReorderService,
+})

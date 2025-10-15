@@ -1,5 +1,8 @@
+import { Module } from "@medusajs/framework/utils"
 import MetaProductFeedService from './service'
 
-export const METAPRODUCTFEEDSERVICE_MODULE = 'meta-product-feedService'
+export const META_PRODUCT_FEED_MODULE = "metaProductFeedService"
 
-export default MetaProductFeedService
+export default Module(META_PRODUCT_FEED_MODULE, {
+  service: MetaProductFeedService,
+})

@@ -1,5 +1,8 @@
+import { Module } from "@medusajs/framework/utils"
 import FirstPurchaseDiscountService from './service'
 
-export const FIRSTPURCHASEDISCOUNTSERVICE_MODULE = 'first-purchase-discountService'
+export const FIRST_PURCHASE_DISCOUNT_MODULE = "firstPurchaseDiscountService"
 
-export default FirstPurchaseDiscountService
+export default Module(FIRST_PURCHASE_DISCOUNT_MODULE, {
+  service: FirstPurchaseDiscountService,
+})
