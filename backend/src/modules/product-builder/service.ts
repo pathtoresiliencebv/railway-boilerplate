@@ -59,7 +59,7 @@ export default class ProductBuilderService {
     const productModuleService: IProductModuleService = this.container.resolve(Modules.PRODUCT)
     const product = await productModuleService.retrieveProduct(template.productId)
     
-    const builderTemplates = product.metadata?.builder_templates || []
+    const builderTemplates: ProductBuilderTemplate[] = (product.metadata?.builder_templates as ProductBuilderTemplate[]) || []
     builderTemplates.push(template)
 
     await productModuleService.updateProducts(template.productId, {
@@ -80,7 +80,7 @@ export default class ProductBuilderService {
       const templates = product.metadata?.builder_templates || []
       
       // Return the first active template
-      return templates.find((template: ProductBuilderTemplate) => template.isActive) || null
+      return (templates as ProductBuilderTemplate[]).find((template: ProductBuilderTemplate) => template.isActive) || null
     } catch (error) {
       console.error('Error retrieving builder template:', error)
       return null
@@ -97,7 +97,7 @@ export default class ProductBuilderService {
     
     try {
       const product = await productModuleService.retrieveProduct(productId)
-      const basePrice = product.variants?.[0]?.prices?.[0]?.amount || 0
+      const basePrice = Number(product.variants?.[0]?.price || 0)
       
       // Calculate price modifiers based on options
       const priceModifiers = await this.calculatePriceModifiers(productId, options)
@@ -143,6 +143,8 @@ export default class ProductBuilderService {
       await cartModuleService.addLineItems(cartId, [{
         variant_id: configuration.productId,
         quantity,
+        title: `Custom ${configuration.productId}`,
+        unit_price: configuration.calculatedPrice,
         metadata: {
           product_configuration: configuration,
           custom_price: configuration.calculatedPrice

@@ -49,7 +49,7 @@ export default class NewsletterService {
           throw new Error('Email is already subscribed')
         } else {
           // Reactivate subscription
-          return await this.reactivateSubscription(email, preferences)
+          return await this.subscribe(email, preferences)
         }
       }
 

@@ -178,6 +178,7 @@ export default class QuoteManagementService {
         items: quoteResponse.items.map(item => ({
           variant_id: item.productId,
           quantity: item.quantity,
+          title: item.productName,
           unit_price: item.unitPrice
         })),
         metadata: {

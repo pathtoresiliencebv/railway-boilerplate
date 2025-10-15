@@ -65,7 +65,7 @@ export default class SavedPaymentMethodsService {
 
       // Get customer's existing payment methods
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const savedPaymentMethods: SavedPaymentMethod[] = customer.metadata?.saved_payment_methods || []
+      const savedPaymentMethods: SavedPaymentMethod[] = (customer.metadata?.saved_payment_methods as SavedPaymentMethod[]) || []
 
       // If this is set as default, unset other defaults
       if (savedPaymentMethod.isDefault) {

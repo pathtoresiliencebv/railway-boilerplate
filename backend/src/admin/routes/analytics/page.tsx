@@ -4,7 +4,27 @@ const ChartBar = () => <span>📊</span>
 const TrendingUp = () => <span>📈</span>
 const Users = () => <span>👥</span>
 const ShoppingBag = () => <span>🛍️</span>
-import { Container, Heading, Text, Badge, Card, Grid } from "@medusajs/ui"
+// Using simple HTML elements instead of @medusajs/ui
+const Container = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+  <div className={`p-6 ${className || ''}`}>{children}</div>
+)
+const Heading = ({ level, children }: { level: string, children: React.ReactNode }) => (
+  <h2 className="text-2xl font-bold mb-4">{children}</h2>
+)
+const Text = ({ children }: { children: React.ReactNode }) => (
+  <p className="text-gray-600">{children}</p>
+)
+const Badge = ({ children, color }: { children: React.ReactNode, color?: string }) => (
+  <span className={`px-2 py-1 rounded text-sm ${color === 'green' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
+    {children}
+  </span>
+)
+const Card = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+  <div className={`bg-white rounded-lg shadow p-4 ${className || ''}`}>{children}</div>
+)
+const Grid = ({ children, cols }: { children: React.ReactNode, cols?: number }) => (
+  <div className={`grid gap-4 ${cols === 2 ? 'grid-cols-2' : 'grid-cols-1'}`}>{children}</div>
+)
 import { useState, useEffect } from "react"
 
 interface AnalyticsData {

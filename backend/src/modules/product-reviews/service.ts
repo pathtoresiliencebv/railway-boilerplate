@@ -27,7 +27,7 @@ export default class ProductReviewsService {
     
     try {
       const product = await productModuleService.retrieveProduct(productId)
-      const reviews = product.metadata?.reviews || []
+      const reviews: ProductReview[] = (product.metadata?.reviews as ProductReview[]) || []
       
       const newReview: ProductReview = {
         id: `review_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -62,7 +62,7 @@ export default class ProductReviewsService {
     
     try {
       const product = await productModuleService.retrieveProduct(productId)
-      const reviews = product.metadata?.reviews || []
+      const reviews: ProductReview[] = (product.metadata?.reviews as ProductReview[]) || []
       
       const reviewIndex = reviews.findIndex((review: ProductReview) => review.id === reviewId)
       if (reviewIndex !== -1) {
@@ -89,7 +89,7 @@ export default class ProductReviewsService {
     
     try {
       const product = await productModuleService.retrieveProduct(productId)
-      const reviews = product.metadata?.reviews || []
+      const reviews: ProductReview[] = (product.metadata?.reviews as ProductReview[]) || []
       
       if (approvedOnly) {
         return reviews.filter((review: ProductReview) => review.isApproved)

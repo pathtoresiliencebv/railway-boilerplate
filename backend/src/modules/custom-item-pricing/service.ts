@@ -34,7 +34,7 @@ export default class CustomItemPricingService {
       // Store rule in customer metadata or create a separate pricing rules system
       if (ruleData.customerId) {
         const customer = await customerModuleService.retrieveCustomer(ruleData.customerId)
-        const customPricingRules = customer.metadata?.custom_pricing_rules || []
+        const customPricingRules: CustomPriceRule[] = (customer.metadata?.custom_pricing_rules as CustomPriceRule[]) || []
         customPricingRules.push(rule)
 
         await customerModuleService.updateCustomers(ruleData.customerId, {
@@ -60,7 +60,7 @@ export default class CustomItemPricingService {
       const customer = await customerModuleService.retrieveCustomer(customerId)
       const product = await productModuleService.retrieveProduct(productId)
       
-      const customPricingRules = customer.metadata?.custom_pricing_rules || []
+      const customPricingRules: CustomPriceRule[] = (customer.metadata?.custom_pricing_rules as CustomPriceRule[]) || []
       const applicableRules = this.getApplicableRules(customPricingRules, productId, quantity)
       
       let finalPrice = basePrice
@@ -144,7 +144,7 @@ export default class CustomItemPricingService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const customPricingRules = customer.metadata?.custom_pricing_rules || []
+      const customPricingRules: CustomPriceRule[] = (customer.metadata?.custom_pricing_rules as CustomPriceRule[]) || []
       
       const ruleIndex = customPricingRules.findIndex((rule: CustomPriceRule) => rule.id === ruleId)
       if (ruleIndex === -1) return null

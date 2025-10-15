@@ -15,7 +15,7 @@ export default class AbandonedCartService {
     
     try {
       const abandonedCarts = await cartModuleService.listCarts({
-        updated_at: { lt: twentyFourHoursAgo },
+        updated_at: { $lt: twentyFourHoursAgo },
         completed_at: null
       })
 

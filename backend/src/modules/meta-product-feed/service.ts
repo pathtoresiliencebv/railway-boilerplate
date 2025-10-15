@@ -34,11 +34,9 @@ export default class MetaProductFeedService {
     const storeModuleService: IStoreModuleService = this.container.resolve(Modules.STORE)
     
     try {
-      const products = await productModuleService.listProducts({
-        include: ['variants', 'categories', 'images']
-      })
+      const products = await productModuleService.listProducts()
       
-      const store = await storeModuleService.retrieveStore()
+      const store = await storeModuleService.retrieveStore('default')
       const baseUrl = store.metadata?.frontend_url || process.env.FRONTEND_URL || 'https://yourstore.com'
       
       const feedItems: MetaProductFeedItem[] = []

@@ -19,13 +19,13 @@ export async function GET(
     // Get orders for the period
     const orders = await orderModuleService.listOrders({
       created_at: {
-        gte: startDate,
-        lte: endDate
+        $gte: startDate,
+        $lte: endDate
       }
     })
 
     // Calculate analytics data
-    const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0)
+    const totalRevenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0)
     const totalOrders = orders.length
     const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0
 
@@ -60,7 +60,7 @@ export async function GET(
         return orderDate >= dayStart && orderDate <= dayEnd
       })
 
-      const dayRevenue = dayOrders.reduce((sum, order) => sum + (order.total || 0), 0)
+      const dayRevenue = dayOrders.reduce((sum, order) => sum + Number(order.total || 0), 0)
       
       dailySales.push({
         date: date.toISOString().split('T')[0],
@@ -87,7 +87,7 @@ export async function GET(
           id: productId,
           title: product?.title || 'Unknown Product',
           quantity,
-          revenue: quantity * (product?.variants?.[0]?.prices?.[0]?.amount || 0)
+          revenue: quantity * Number(product?.variants?.[0]?.price || 0)
         }
       })
       .sort((a, b) => b.quantity - a.quantity)

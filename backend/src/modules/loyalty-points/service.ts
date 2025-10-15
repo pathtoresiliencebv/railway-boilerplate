@@ -14,7 +14,7 @@ export default class LoyaltyPointsService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const currentPoints = customer.metadata?.loyalty_points || 0
+      const currentPoints = Number(customer.metadata?.loyalty_points || 0)
       const newPoints = currentPoints + pointsToAward
 
       await customerModuleService.updateCustomers(customerId, {
@@ -37,7 +37,7 @@ export default class LoyaltyPointsService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      const currentPoints = customer.metadata?.loyalty_points || 0
+      const currentPoints = Number(customer.metadata?.loyalty_points || 0)
 
       if (currentPoints < pointsToRedeem) {
         throw new Error('Insufficient loyalty points')

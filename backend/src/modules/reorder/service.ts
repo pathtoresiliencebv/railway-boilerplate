@@ -112,7 +112,12 @@ export default class ReorderService {
         throw new Error('No available items in this reorder')
       }
 
-      await cartModuleService.addLineItems(cartId, lineItems)
+      await cartModuleService.addLineItems(cartId, lineItems.map(item => ({
+        variant_id: item.variantId,
+        quantity: item.quantity,
+        title: item.productName,
+        unit_price: item.unitPrice
+      })))
 
       // Update reorder usage
       reorderItem.lastUsedAt = new Date()

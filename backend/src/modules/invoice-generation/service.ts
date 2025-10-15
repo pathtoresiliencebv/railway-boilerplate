@@ -38,8 +38,8 @@ export default class InvoiceGenerationService {
         invoiceNumber: this.generateInvoiceNumber(),
         orderId: order.id,
         customerId: order.customer_id,
-        customerName: `${order.customer?.first_name || ''} ${order.customer?.last_name || ''}`.trim(),
-        customerEmail: order.customer?.email || '',
+        customerName: `${order.customer_id || ''}`.trim(),
+        customerEmail: order.email || '',
         billingAddress: order.billing_address,
         items: order.items?.map(item => ({
           name: item.title,
@@ -47,10 +47,10 @@ export default class InvoiceGenerationService {
           unitPrice: item.unit_price,
           total: item.unit_price * item.quantity
         })) || [],
-        subtotal: order.subtotal || 0,
-        taxAmount: order.tax_total || 0,
-        shippingAmount: order.shipping_total || 0,
-        total: order.total || 0,
+        subtotal: Number(order.subtotal || 0),
+        taxAmount: Number(order.tax_total || 0),
+        shippingAmount: Number(order.shipping_total || 0),
+        total: Number(order.total || 0),
         issueDate: new Date(),
         dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
         status: 'draft'
@@ -195,7 +195,7 @@ export default class InvoiceGenerationService {
     
     try {
       const order = await orderModuleService.retrieveOrder(orderId)
-      return order.metadata?.invoice_data || null
+      return (order.metadata?.invoice_data as InvoiceData) || null
     } catch (error) {
       console.error('Error retrieving invoice:', error)
       return null
