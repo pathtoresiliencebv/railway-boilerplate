@@ -1,33 +1,12 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-// Using simple icons instead of @medusajs/icons
-const ChartBar = ({ className }: { className?: string }) => <span className={className}>📊</span>
-const TrendingUp = ({ className }: { className?: string }) => <span className={className}>📈</span>
-const Users = ({ className }: { className?: string }) => <span className={className}>👥</span>
-const ShoppingBag = ({ className }: { className?: string }) => <span className={className}>🛍️</span>
-// Using simple HTML elements instead of @medusajs/ui
+// Medusa UI and Icons for native look & feel
+import { Heading, Text, Badge } from "@medusajs/ui"
+import { Home, ChartBar, TrendingUp, Users, ShoppingBag } from "@medusajs/icons"
 const Container = ({ children, className }: { children: React.ReactNode, className?: string }) => (
   <div className={`p-6 ${className || ''}`}>{children}</div>
 )
-const Heading = ({ level, children, className }: { level: string, children: React.ReactNode, className?: string }) => (
-  <h2 className={`text-2xl font-bold mb-4 ${className || ''}`}>{children}</h2>
-)
-const Text = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-  <p className={`text-gray-600 ${className || ''}`}>{children}</p>
-)
-const Badge = ({ children, color, variant }: { children: React.ReactNode, color?: string, variant?: string }) => (
-  <span className={`px-2 py-1 rounded text-sm ${
-    variant === 'success' ? 'bg-green-100 text-green-800' :
-    variant === 'warning' ? 'bg-yellow-100 text-yellow-800' :
-    variant === 'attention' ? 'bg-orange-100 text-orange-800' :
-    variant === 'danger' ? 'bg-red-100 text-red-800' :
-    variant === 'secondary' ? 'bg-gray-100 text-gray-800' :
-    color === 'green' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
-  }`}>
-    {children}
-  </span>
-)
 const Card = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-  <div className={`bg-white rounded-lg shadow p-4 ${className || ''}`}>{children}</div>
+  <div className={`bg-ui-bg-base rounded-lg border border-ui-border-base shadow-xs p-4 ${className || ''}`}>{children}</div>
 )
 const Grid = ({ children, cols, className }: { children: React.ReactNode, cols?: number, className?: string }) => (
   <div className={`grid gap-4 ${className || (cols === 2 ? 'grid-cols-2' : 'grid-cols-1')}`}>{children}</div>
@@ -128,7 +107,7 @@ const AnalyticsDashboard = () => {
           <Heading level="h1" className="text-2xl font-bold">
             Analytics Dashboard
           </Heading>
-          <Text className="text-gray-600 mt-1">
+          <Text className="text-ui-fg-subtle mt-1">
             {analytics.period.startDate} - {analytics.period.endDate}
           </Text>
         </div>
@@ -154,48 +133,48 @@ const AnalyticsDashboard = () => {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <Text className="text-sm text-gray-600">Total Revenue</Text>
-              <Text className="text-2xl font-bold text-green-600">
+              <Text className="text-sm text-ui-fg-subtle">Total Revenue</Text>
+              <Text className="text-2xl font-bold text-ui-tag-green-text">
                 {formatCurrency(analytics.overview.totalRevenue)}
               </Text>
             </div>
-            <TrendingUp className="h-8 w-8 text-green-600" />
+            <TrendingUp className="h-8 w-8 text-ui-tag-green-text" />
           </div>
         </Card>
 
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <Text className="text-sm text-gray-600">Total Orders</Text>
-              <Text className="text-2xl font-bold text-blue-600">
+              <Text className="text-sm text-ui-fg-subtle">Total Orders</Text>
+              <Text className="text-2xl font-bold text-ui-tag-blue-text">
                 {formatNumber(analytics.overview.totalOrders)}
               </Text>
             </div>
-            <ShoppingBag className="h-8 w-8 text-blue-600" />
+            <ShoppingBag className="h-8 w-8 text-ui-tag-blue-text" />
           </div>
         </Card>
 
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <Text className="text-sm text-gray-600">Total Customers</Text>
-              <Text className="text-2xl font-bold text-purple-600">
+              <Text className="text-sm text-ui-fg-subtle">Total Customers</Text>
+              <Text className="text-2xl font-bold text-ui-tag-purple-text">
                 {formatNumber(analytics.overview.totalCustomers)}
               </Text>
             </div>
-            <Users className="h-8 w-8 text-purple-600" />
+            <Users className="h-8 w-8 text-ui-tag-purple-text" />
           </div>
         </Card>
 
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <Text className="text-sm text-gray-600">Avg Order Value</Text>
-              <Text className="text-2xl font-bold text-orange-600">
+              <Text className="text-sm text-ui-fg-subtle">Avg Order Value</Text>
+              <Text className="text-2xl font-bold text-ui-tag-orange-text">
                 {formatCurrency(analytics.overview.averageOrderValue)}
               </Text>
             </div>
-            <ChartBar className="h-8 w-8 text-orange-600" />
+            <ChartBar className="h-8 w-8 text-ui-tag-orange-text" />
           </div>
         </Card>
       </Grid>
@@ -203,17 +182,17 @@ const AnalyticsDashboard = () => {
       {/* Additional Metrics */}
       <Grid className="grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card className="p-6">
-          <Text className="text-sm text-gray-600 mb-2">New Customers</Text>
+          <Text className="text-sm text-ui-fg-subtle mb-2">New Customers</Text>
           <Text className="text-xl font-bold">{formatNumber(analytics.overview.newCustomers)}</Text>
         </Card>
 
         <Card className="p-6">
-          <Text className="text-sm text-gray-600 mb-2">Total Products</Text>
+          <Text className="text-sm text-ui-fg-subtle mb-2">Total Products</Text>
           <Text className="text-xl font-bold">{formatNumber(analytics.overview.totalProducts)}</Text>
         </Card>
 
         <Card className="p-6">
-          <Text className="text-sm text-gray-600 mb-2">Conversion Rate</Text>
+          <Text className="text-sm text-ui-fg-subtle mb-2">Conversion Rate</Text>
           <Text className="text-xl font-bold">{analytics.overview.conversionRate}%</Text>
         </Card>
       </Grid>
@@ -230,10 +209,10 @@ const AnalyticsDashboard = () => {
               <div key={day.date} className="flex items-center justify-between">
                 <Text className="text-sm">{day.date}</Text>
                 <div className="flex items-center gap-4">
-                  <Text className="text-sm font-medium">
+                <Text className="text-sm font-medium">
                     {formatCurrency(day.revenue)}
                   </Text>
-                  <Badge variant="secondary">
+                <Badge variant="secondary">
                     {day.orders} orders
                   </Badge>
                 </div>
@@ -281,7 +260,7 @@ const AnalyticsDashboard = () => {
                 <Text className="font-medium">{product.title}</Text>
               </div>
               <div className="flex items-center gap-4">
-                <Text className="text-sm text-gray-600">
+                <Text className="text-sm text-ui-fg-subtle">
                   {formatNumber(product.quantity)} sold
                 </Text>
                 <Text className="text-sm font-medium">
@@ -297,8 +276,11 @@ const AnalyticsDashboard = () => {
 }
 
 export const config = defineRouteConfig({
-  label: "Analytics",
-  icon: ChartBar,
+  label: "Dashboard",
+  icon: Home,
+  path: "/",
+  parent: undefined,
+  sortPriority: 0,
 })
 
 export default AnalyticsDashboard
