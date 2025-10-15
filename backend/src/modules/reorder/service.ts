@@ -180,8 +180,8 @@ export default class ReorderService {
       const lineItems = preset.items.map(item => ({
         variant_id: item.variantId,
         quantity: item.quantity,
-        title: item.productName,
-        unit_price: item.unitPrice
+        title: `Product ${item.productId}`,
+        unit_price: 0
       }))
 
       await cartModuleService.addLineItems(cartId, lineItems)

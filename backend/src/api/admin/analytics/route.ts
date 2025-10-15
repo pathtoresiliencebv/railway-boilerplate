@@ -87,7 +87,7 @@ export async function GET(
           id: productId,
           title: product?.title || 'Unknown Product',
           quantity,
-          revenue: quantity * Number(product?.variants?.[0]?.calculated_amount || 0)
+          revenue: quantity * 0 // Placeholder - would need actual price calculation
         }
       })
       .sort((a, b) => b.quantity - a.quantity)

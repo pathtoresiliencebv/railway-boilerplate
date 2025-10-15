@@ -1,10 +1,11 @@
-import {
-  ICartModuleService,
-  ICustomerModuleService,
-  IOrderModuleService,
-  IProductModuleService,
-  Modules,
-} from "@medusajs/framework"
+// Note: These imports may need to be adjusted based on your Medusa version
+// import {
+//   ICartModuleService,
+//   ICustomerModuleService,
+//   IOrderModuleService,
+//   IProductModuleService,
+//   Modules,
+// } from "@medusajs/framework"
 
 export interface AnalyticsData {
   revenue: {

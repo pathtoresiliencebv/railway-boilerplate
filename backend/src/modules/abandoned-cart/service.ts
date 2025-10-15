@@ -16,7 +16,7 @@ export default class AbandonedCartService {
     try {
       const abandonedCarts = await cartModuleService.listCarts({
         updated_at: { $lt: twentyFourHoursAgo.toISOString() },
-        completed_at: null
+        // completed_at: null // This property may not be available in all Medusa versions
       })
 
       for (const cart of abandonedCarts) {
