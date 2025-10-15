@@ -6,22 +6,8 @@ import { StoreRegion } from '@medusajs/types'
 import BlogPostTemplate from '@modules/blog/templates/blogPostTemplate'
 
 export async function generateStaticParams() {
-  const slugs = await getAllBlogSlugs()
-
-  if (!slugs) {
-    return []
-  }
-
-  const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
-    regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
-  )
-
-  return slugs.flatMap((slug) =>
-    countryCodes.map((countryCode) => ({
-      slug,
-      countryCode,
-    }))
-  )
+  // Temporarily disabled for build - Strapi service not available during build
+  return []
 }
 
 export async function generateMetadata(props) {
