@@ -9,5 +9,15 @@
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
+  },
+  "services": {
+    "backend": {
+      "startCommand": "cd backend && pnpm start",
+      "healthcheckPath": "/api/healthcheck"
+    },
+    "storefront": {
+      "startCommand": "cd solace-medusa-starter && pnpm run dev",
+      "healthcheckPath": "/api/healthcheck"
+    }
   }
 }
