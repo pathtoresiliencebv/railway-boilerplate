@@ -42,8 +42,8 @@ async function storeContextMiddleware(
 
     // Inject store context into request
     req.scope.register({
-      currentStore: { asValue: store },
-      currentStoreConfig: { asValue: storeConfig },
+      currentStore: store,
+      currentStoreConfig: storeConfig,
     })
 
     next()

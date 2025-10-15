@@ -17,7 +17,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
 export async function PUT(req: MedusaRequest, res: MedusaResponse) {
   const { id } = req.params
-  const { name, subdomain, is_active, metadata } = req.body
+  const { name, subdomain, is_active, metadata } = req.body as any
 
   const { result } = await updateStoreWorkflow(req.scope).run({
     input: { storeId: id, name, subdomain, is_active, metadata },

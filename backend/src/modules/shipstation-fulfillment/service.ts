@@ -192,7 +192,7 @@ class ShipStationFulfillmentService extends AbstractFulfillmentProviderService {
         },
         labels: [
           {
-            url: label.labelData,
+            label_url: label.labelData,
             tracking_number: label.trackingNumber
           }
         ]
@@ -220,15 +220,13 @@ class ShipStationFulfillmentService extends AbstractFulfillmentProviderService {
     }
   }
 
-  async createReturnFulfillment(
-    data: Record<string, unknown>,
-    items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
-    order: Partial<FulfillmentOrderDTO> | undefined,
-    fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>
-  ): Promise<CreateFulfillmentResult> {
+  async createReturnFulfillment(fulfillment: Record<string, unknown>): Promise<CreateFulfillmentResult> {
     // ShipStation doesn't have specific return label creation
     // This would typically create a return shipping label
-    return this.createFulfillment(data, items, order, fulfillment)
+    return {
+      data: fulfillment,
+      labels: []
+    }
   }
 
   private async convertToShipStationOrder(
@@ -243,8 +241,8 @@ class ShipStationFulfillmentService extends AbstractFulfillmentProviderService {
     return {
       orderNumber: order.display_id?.toString() || order.id,
       orderKey: order.id,
-      orderDate: order.created_at,
-      paymentDate: order.created_at,
+      orderDate: order.created_at?.toString() || new Date().toISOString(),
+      paymentDate: order.created_at?.toString() || new Date().toISOString(),
       shipByDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days from now
       orderStatus: 'awaiting_shipment',
       customerUsername: order.email || '',
@@ -255,8 +253,8 @@ class ShipStationFulfillmentService extends AbstractFulfillmentProviderService {
       amountPaid: Number(order.total || 0),
       taxAmount: Number(order.tax_total || 0),
       shippingAmount: Number(order.shipping_total || 0),
-      customerNotes: order.metadata?.customer_notes || '',
-      internalNotes: order.metadata?.internal_notes || '',
+      customerNotes: (order.metadata?.customer_notes as string) || '',
+      internalNotes: (order.metadata?.internal_notes as string) || '',
       gift: false,
       giftMessage: '',
       paymentMethod: 'credit_card',
@@ -300,17 +298,17 @@ class ShipStationFulfillmentService extends AbstractFulfillmentProviderService {
   private convertItem(item: Partial<Omit<FulfillmentItemDTO, "fulfillment">>): ShipStationItem {
     return {
       lineItemKey: item.id || '',
-      sku: item.variant?.sku || '',
+      sku: (item as any).variant?.sku || '',
       name: item.title || '',
-      imageUrl: item.thumbnail || '',
-      weight: Number(item.variant?.weight || 0),
+      imageUrl: (item as any).thumbnail || '',
+      weight: Number((item as any).variant?.weight || 0),
       weightUnits: this.options_.weightUnit || 'lb',
       quantity: item.quantity || 1,
-      unitPrice: Number(item.unit_price || 0),
+      unitPrice: Number((item as any).unit_price || 0),
       location: 'default',
       options: '',
       productId: 0,
-      fulfillmentSku: item.variant?.sku || '',
+      fulfillmentSku: (item as any).variant?.sku || '',
       adjustment: false,
       upc: '',
       createDate: new Date().toISOString(),
@@ -320,7 +318,7 @@ class ShipStationFulfillmentService extends AbstractFulfillmentProviderService {
 
   private calculateTotalWeight(items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[]): number {
     return items.reduce((total, item) => {
-      const weight = Number(item.variant?.weight || 0)
+      const weight = Number((item as any).variant?.weight || 0)
       const quantity = Number(item.quantity || 1)
       return total + (weight * quantity)
     }, 0)

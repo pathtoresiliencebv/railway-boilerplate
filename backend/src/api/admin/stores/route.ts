@@ -20,7 +20,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const { name, subdomain, currencies, metadata } = req.body
+  const { name, subdomain, currencies, metadata } = req.body as any
 
   const { result } = await createStoreWorkflow(req.scope).run({
     input: { name, subdomain, currencies, metadata },
