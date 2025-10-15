@@ -40,7 +40,6 @@ const deleteStoreStep = createStep(
 
     // Recreate store
     const restoredStore = await storeModuleService.createStores({
-      id: store.id,
       name: store.name,
       supported_currencies: store.supported_currencies,
       metadata: store.metadata,
@@ -49,7 +48,6 @@ const deleteStoreStep = createStep(
     // Recreate config
     if (storeConfig) {
       await multiStoreService.createStoreConfigs({
-        id: storeConfig.id,
         store_id: restoredStore.id,
         subdomain: storeConfig.subdomain,
         is_active: storeConfig.is_active,
