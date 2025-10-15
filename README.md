@@ -16,8 +16,12 @@
 </p>
 
 <h2 align="center">
-  Railway Boilerplate - MedusaJS 2.0 Monorepo
+  Solace Medusa Starter - Storefront
 </h2>
+
+<p align="center">
+  <strong>Modern Next.js Storefront for Railway Boilerplate</strong>
+</p>
 <h4 align="center">
   Production-ready ecommerce platform optimized for Railway deployment
 </h4>
