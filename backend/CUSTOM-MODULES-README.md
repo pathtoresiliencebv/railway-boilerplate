@@ -253,6 +253,87 @@ The following advanced modules are fully implemented:
   - Payment token management
   - Usage tracking
 
+### 17. Webhooks Module
+- **Location**: `backend/src/modules/webhooks/`
+- **Features**:
+  - Webhook registration and management
+  - Event subscription system
+  - Secure payload delivery with HMAC signatures
+  - Retry logic with exponential backoff
+  - Admin API for webhook CRUD operations
+  - Support for key events: order, product, customer, fulfillment
+
+## 🔌 Third-Party Plugin Integrations
+
+### 17. ConnectyCube Chat Widget
+- **Package**: `@connectycube/chat-widget-medusa-plugin`
+- **Features**:
+  - Real-time chat between customers and sellers
+  - Customizable UI and themes
+  - Multimedia support (images, files, emojis)
+  - Moderation tools and admin controls
+  - Product-specific chat functionality
+
+### 18. RSC Labs PDF Documents v2
+- **Package**: `@rsc-labs/medusa-documents-v2`
+- **Features**:
+  - Generate PDF documents (invoices, packing slips, etc.)
+  - Custom document templates
+  - Email delivery integration
+  - Document management and tracking
+
+### 19. Custom Product Attributes
+- **Package**: `medusa-custom-attributes`
+- **Features**:
+  - Add custom attributes to products
+  - Category-level attribute management
+  - Attribute synchronization
+  - Admin UI for attribute management
+
+### 20. Alpha Solutions Image Alt Text
+- **Package**: `@alpha-solutions/medusa-image-alt`
+- **Features**:
+  - Bulk management of image alt text
+  - Import/export functionality
+  - SEO optimization
+  - Accessibility compliance
+
+### 21. RSC Labs Products Bought Together v2
+- **Package**: `@rsc-labs/medusa-products-bought-together-v2`
+- **Features**:
+  - Track products frequently bought together
+  - Recommendation engine
+  - Analytics and insights
+  - API for retrieving recommendations
+
+### 22. RSC Labs Store Analytics v2
+- **Package**: `@rsc-labs/medusa-store-analytics-v2`
+- **Features**:
+  - Comprehensive store analytics
+  - Sales and order analytics
+  - Performance metrics
+  - Dashboard visualization
+
+## 🎯 Manual Fulfillment Provider
+
+### Built-in Manual Fulfillment
+- **Configuration**: Enabled in `medusa-config.js`
+- **Features**:
+  - Manual order fulfillment processing
+  - Admin interface for fulfillment management
+  - Integration with existing fulfillment workflows
+  - Support for multiple fulfillment providers
+
+## 🖼️ Variant Images Support
+
+### Native Medusa v2 Support
+- **Implementation**: Built-in Product Module functionality
+- **Features**:
+  - Multiple images per product variant
+  - Image management through admin interface
+  - API support for image operations
+  - Integration with file storage providers
+
 ## 🔄 Recipes (Workflows)
 
 The following workflow recipes are implemented:

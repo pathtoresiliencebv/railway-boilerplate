@@ -115,3 +115,10 @@ export const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 export const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 export const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
 export const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;
+
+/**
+ * ConnectyCube Chat Widget Configuration
+ */
+export const VITE_BACKEND_URL = process.env.VITE_BACKEND_URL;
+export const VITE_CHAT_APP_ID = process.env.VITE_CHAT_APP_ID;
+export const VITE_CHAT_AUTH_KEY = process.env.VITE_CHAT_AUTH_KEY;

@@ -53,6 +53,15 @@ const medusaConfig = {
   admin: {
     backendUrl: BACKEND_URL,
     disable: SHOULD_DISABLE_ADMIN,
+    vite: (config) => {
+      config.define["__VITE_CHAT_APP_ID__"] = JSON.stringify(process.env.VITE_CHAT_APP_ID);
+      config.define["__VITE_CHAT_AUTH_KEY__"] = JSON.stringify(process.env.VITE_CHAT_AUTH_KEY);
+      return {
+        optimizeDeps: {
+          include: ["qs", "eventemitter3", "@xmpp/iq/callee", "@xmpp/resolve", "@xmpp/session-establishment", "@xmpp/client-core", "@xmpp/sasl-plain", "@xmpp/stream-features", "@xmpp/resource-binding", "@xmpp/reconnect", "@xmpp/middleware", "@xmpp/sasl-anonymous", "@xmpp/websocket", "@xmpp/iq/caller", "@xmpp/sasl"],
+        },
+      };
+    },
   },
   modules: [
     // Core Medusa v2.10.2 Modules (automatically enabled):
@@ -185,6 +194,21 @@ const medusaConfig = {
       },
     }] : []),
 
+    // Fulfillment Module with Manual Provider
+    {
+      key: Modules.FULFILLMENT,
+      resolve: '@medusajs/medusa/fulfillment',
+      options: {
+        providers: [
+          {
+            resolve: '@medusajs/medusa/fulfillment-manual',
+            id: 'manual',
+            options: {}
+          }
+        ]
+      }
+    },
+
     // Custom Feature Modules
     {
       key: 'abandonedCartService',
@@ -253,10 +277,44 @@ const medusaConfig = {
     {
       key: 'analyticsService',
       resolve: './src/modules/analytics',
+    },
+    {
+      key: 'webhooksService',
+      resolve: './src/modules/webhooks',
     }
   ],
   plugins: [
-  ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
+    // ConnectyCube Chat Widget Plugin
+    {
+      resolve: "@connectycube/chat-widget-medusa-plugin",
+      options: {},
+    },
+    // RSC Labs PDF Documents v2 Plugin
+    {
+      resolve: "@rsc-labs/medusa-documents-v2",
+      options: {},
+    },
+    // Custom Attributes Plugin
+    {
+      resolve: "medusa-custom-attributes",
+      options: {},
+    },
+    // Alpha Solutions Image Alt Plugin
+    {
+      resolve: "@alpha-solutions/medusa-image-alt",
+      options: {},
+    },
+    // RSC Labs Products Bought Together v2 Plugin
+    {
+      resolve: "@rsc-labs/medusa-products-bought-together-v2",
+      options: {},
+    },
+    // RSC Labs Store Analytics v2 Plugin
+    {
+      resolve: "@rsc-labs/medusa-store-analytics-v2",
+      options: {},
+    },
+    ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
       resolve: '@rokmohar/medusa-plugin-meilisearch',
       options: {
         config: {

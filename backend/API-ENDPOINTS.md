@@ -523,6 +523,37 @@ Content-Type: application/json
 GET /admin/saved-payment-methods/stats/:customerId
 ```
 
+### 17. Webhooks Module
+**Base Path:** `/admin/webhooks`
+
+#### Endpoints
+```http
+GET /admin/webhooks
+Query: ?isActive=true&limit=20&offset=0
+
+POST /admin/webhooks
+Content-Type: application/json
+{
+  "url": "https://example.com/webhook",
+  "events": ["order.placed", "product.created"],
+  "secret": "optional-secret-key"
+}
+
+GET /admin/webhooks/:id
+
+PUT /admin/webhooks/:id
+Content-Type: application/json
+{
+  "url": "https://new-example.com/webhook",
+  "events": ["order.placed", "order.updated"],
+  "isActive": true
+}
+
+DELETE /admin/webhooks/:id
+
+POST /admin/webhooks/:id/test
+```
+
 ## 🔄 Recipe Workflow Endpoints
 
 ### 1. Product Bundle Recipe
