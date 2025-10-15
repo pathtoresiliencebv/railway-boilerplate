@@ -1,6 +1,5 @@
-import { Module } from '@medusajs/utils'
 import AbandonedCartService from './service'
 
-export default Module('abandonedCartService', {
-  service: AbandonedCartService
-})
+export const ABANDONEDCARTSERVICE_MODULE = 'abandonedCartService'
+
+export default AbandonedCartService

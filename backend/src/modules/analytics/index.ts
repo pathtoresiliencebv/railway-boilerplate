@@ -1,6 +1,5 @@
-import { Module } from '@medusajs/utils'
 import AnalyticsService from './service'
 
-export default Module('analyticsService', {
-  service: AnalyticsService
-})
+export const ANALYTICSSERVICE_MODULE = 'analyticsService'
+
+export default AnalyticsService

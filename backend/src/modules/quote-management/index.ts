@@ -1,6 +1,5 @@
-import { Module } from '@medusajs/utils'
 import QuoteManagementService from './service'
 
-export default Module('quoteManagementService', {
-  service: QuoteManagementService
-})
+export const QUOTEMANAGEMENTSERVICE_MODULE = 'quoteManagementService'
+
+export default QuoteManagementService

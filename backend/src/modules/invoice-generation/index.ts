@@ -1,6 +1,5 @@
-import { Module } from '@medusajs/utils'
 import InvoiceGenerationService from './service'
 
-export default Module('invoiceGenerationService', {
-  service: InvoiceGenerationService
-})
+export const INVOICEGENERATIONSERVICE_MODULE = 'invoiceGenerationService'
+
+export default InvoiceGenerationService
