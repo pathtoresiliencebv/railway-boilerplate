@@ -1,5 +1,6 @@
+import { Module } from '@medusajs/utils'
 import NewsletterService from './service'
 
-export const NEWSLETTERSERVICE_MODULE = 'newsletterService'
-
-export default NewsletterService
+export default Module("newsletterService", {
+  service: NewsletterService
+})

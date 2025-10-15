@@ -1,5 +1,6 @@
+import { Module } from '@medusajs/utils'
 import CustomItemPricingService from './service'
 
-export const CUSTOMITEMPRICINGSERVICE_MODULE = 'customItemPricingService'
-
-export default CustomItemPricingService
+export default Module("custom-item-pricingService", {
+  service: CustomItemPricingService
+})

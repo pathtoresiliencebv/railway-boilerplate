@@ -1,5 +1,6 @@
+import { Module } from '@medusajs/utils'
 import ProductBuilderService from './service'
 
-export const PRODUCTBUILDERSERVICE_MODULE = 'productBuilderService'
-
-export default ProductBuilderService
+export default Module("product-builderService", {
+  service: ProductBuilderService
+})
