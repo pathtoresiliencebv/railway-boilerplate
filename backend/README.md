@@ -78,3 +78,4 @@ COOKIE_SECRET=your-cookie-secret
 # Force Railway deployment with correct commit
 # Force Railway deployment with fixed module exports
 # Force Railway to use latest commit Wed, Oct 15, 2025  4:34:54 PM
+# Force Railway deployment Wed, Oct 15, 2025  5:40:18 PM
