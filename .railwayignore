@@ -1,8 +1,11 @@
-# Ignore yarn files to force npm usage
+# Force npm usage - block all yarn files
 yarn.lock
 .yarnrc.yml
 .yarn/
 node_modules/.yarn/
+**/yarn.lock
+**/.yarnrc.yml
+**/.yarn/
 
 # Keep npm files
 package-lock.json
