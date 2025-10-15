@@ -4,15 +4,14 @@
   "description": "Medusa e-commerce boilerplate with Railway deployment",
   "private": true,
   "scripts": {
-    "dev": "cd storefront && yarn dev",
+    "dev": "cd storefront && npm run dev",
     "dev:backend": "cd backend && yarn dev",
-    "dev:frontend": "cd storefront && yarn dev",
-    "build": "cd backend && yarn build && cd ../storefront && yarn build",
-    "start": "cd backend && yarn start",
-    "start:frontend": "cd storefront && yarn start",
-    "install:all": "cd backend && yarn install && cd ../storefront && yarn install",
-    "deploy:frontend": "cd storefront && ./install-deps.sh && yarn build",
-    "deploy:install": "cd storefront && yarn install --ignore-engines --ignore-optional --non-interactive"
+    "dev:frontend": "cd storefront && npm run dev",
+    "build": "cd storefront && npm run build",
+    "start": "cd storefront && npm start",
+    "start:frontend": "cd storefront && npm start",
+    "install": "cd storefront && npm install --legacy-peer-deps",
+    "install:all": "cd backend && yarn install && cd ../storefront && npm install --legacy-peer-deps"
   },
   "engines": {
     "node": ">=18.0.0"

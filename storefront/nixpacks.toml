@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ["nodejs", "npm"]
+
+[phases.install]
+cmds = [
+  "rm -f yarn.lock .yarnrc.yml",
+  "npm install --legacy-peer-deps"
+]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm start"
