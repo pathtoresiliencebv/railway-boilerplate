@@ -1,5 +1,6 @@
+import { Module } from '@medusajs/utils'
 import GiftMessageService from './service'
 
-export const GIFT_MESSAGE_MODULE = 'giftmessageService'
-
-export default GiftMessageService
+export default Module('giftMessageService', {
+  service: GiftMessageService
+})

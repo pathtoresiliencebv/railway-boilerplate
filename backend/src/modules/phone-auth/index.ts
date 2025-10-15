@@ -1,5 +1,6 @@
+import { Module } from '@medusajs/utils'
 import PhoneAuthService from './service'
 
-export const PHONE_AUTH_MODULE = 'phoneauthService'
-
-export default PhoneAuthService
+export default Module('phoneAuthService', {
+  service: PhoneAuthService
+})
