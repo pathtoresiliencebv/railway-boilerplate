@@ -77,3 +77,4 @@ COOKIE_SECRET=your-cookie-secret
 `pnpm build && pnpm start` will compile the project and run from compiled source. This can be useful for reproducing issues on your cloud instance.
 # Force Railway deployment with correct commit
 # Force Railway deployment with fixed module exports
+# Force Railway to use latest commit Wed, Oct 15, 2025  4:34:54 PM
