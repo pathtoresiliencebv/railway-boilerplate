@@ -1,23 +1,13 @@
 {
-  "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "NIXPACKS"
+    "builder": "NIXPACKS",
+    "buildCommand": "cd storefront && ./install-deps.sh && yarn build"
   },
   "deploy": {
-    "startCommand": "cd backend && pnpm start",
-    "healthcheckPath": "/api/healthcheck",
+    "startCommand": "cd storefront && yarn start",
+    "healthcheckPath": "/",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
-  },
-  "services": {
-    "backend": {
-      "startCommand": "cd backend && pnpm start",
-      "healthcheckPath": "/api/healthcheck"
-    },
-    "storefront": {
-      "startCommand": "cd solace-medusa-starter && pnpm run dev",
-      "healthcheckPath": "/api/healthcheck"
-    }
   }
 }

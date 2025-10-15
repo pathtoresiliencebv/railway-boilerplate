@@ -1,4 +1,4 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { createStoreWorkflow } from "../../../workflows/create-store"
 import { Modules } from "@medusajs/framework/utils"
 import { MULTI_STORE_MODULE } from "../../../modules/multi-store"

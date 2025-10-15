@@ -1,9 +1,9 @@
 import type {
-  MiddlewaresConfig,
   MedusaRequest,
   MedusaResponse,
   MedusaNextFunction,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
+import { defineMiddlewares } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
 import { MULTI_STORE_MODULE } from "../modules/multi-store"
 
@@ -53,11 +53,11 @@ async function storeContextMiddleware(
   }
 }
 
-export const config: MiddlewaresConfig = {
+export default defineMiddlewares({
   routes: [
     {
       matcher: "/store/*",
       middlewares: [storeContextMiddleware],
     },
   ],
-}
+})

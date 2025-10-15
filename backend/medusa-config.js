@@ -194,7 +194,7 @@ const medusaConfig = {
       },
     }] : []),
 
-    // Fulfillment Module with Manual Provider
+    // Fulfillment Module with Manual and ShipStation Providers
     {
       key: Modules.FULFILLMENT,
       resolve: '@medusajs/medusa/fulfillment',
@@ -204,7 +204,18 @@ const medusaConfig = {
             resolve: '@medusajs/medusa/fulfillment-manual',
             id: 'manual',
             options: {}
-          }
+          },
+          ...(SHIPSTATION_API_KEY && SHIPSTATION_API_SECRET ? [{
+            resolve: './src/modules/shipstation-fulfillment',
+            id: 'shipstation',
+            options: {
+              apiKey: SHIPSTATION_API_KEY,
+              apiSecret: SHIPSTATION_API_SECRET,
+              baseUrl: SHIPSTATION_BASE_URL || 'https://ssapi.shipstation.com',
+              weightUnit: SHIPSTATION_WEIGHT_UNIT || 'lb',
+              dimensionUnit: SHIPSTATION_DIMENSION_UNIT || 'in'
+            }
+          }] : [])
         ]
       }
     },
