@@ -277,6 +277,10 @@ const medusaConfig = {
     {
       key: 'webhooksService',
       resolve: './src/modules/webhooks',
+    },
+    {
+      key: 'multiStoreService',
+      resolve: './src/modules/multi-store',
     }
   ],
   plugins: [
