@@ -185,75 +185,75 @@ const medusaConfig = {
       },
     }] : []),
 
-    // Custom Feature Modules
-    {
-      key: 'abandonedCartService',
-      resolve: './src/modules/abandoned-cart',
-    },
-    {
-      key: 'giftMessageService', 
-      resolve: './src/modules/gift-message',
-    },
-    {
-      key: 'loyaltyPointsService',
-      resolve: './src/modules/loyalty-points',
-    },
-    {
-      key: 'wishlistService',
-      resolve: './src/modules/wishlist',
-    },
-    {
-      key: 'productReviewsService',
-      resolve: './src/modules/product-reviews',
-    },
-    {
-      key: 'agenticCommerceService',
-      resolve: './src/modules/agentic-commerce',
-    },
-    {
-      key: 'customItemPricingService',
-      resolve: './src/modules/custom-item-pricing',
-    },
-    {
-      key: 'invoiceGenerationService',
-      resolve: './src/modules/invoice-generation',
-    },
-    {
-      key: 'firstPurchaseDiscountService',
-      resolve: './src/modules/first-purchase-discount',
-    },
-    {
-      key: 'metaProductFeedService',
-      resolve: './src/modules/meta-product-feed',
-    },
-    {
-      key: 'newsletterService',
-      resolve: './src/modules/newsletter',
-    },
-    {
-      key: 'phoneAuthService',
-      resolve: './src/modules/phone-auth',
-    },
-    {
-      key: 'productBuilderService',
-      resolve: './src/modules/product-builder',
-    },
-    {
-      key: 'quoteManagementService',
-      resolve: './src/modules/quote-management',
-    },
-    {
-      key: 'reorderService',
-      resolve: './src/modules/reorder',
-    },
-    {
-      key: 'savedPaymentMethodsService',
-      resolve: './src/modules/saved-payment-methods',
-    },
-    {
-      key: 'analyticsService',
-      resolve: './src/modules/analytics',
-    }
+    // Custom Feature Modules - TEMPORARILY DISABLED FOR RAILWAY DEPLOYMENT
+    // {
+    //   key: 'abandonedCartService',
+    //   resolve: './src/modules/abandoned-cart',
+    // },
+    // {
+    //   key: 'giftMessageService', 
+    //   resolve: './src/modules/gift-message',
+    // },
+    // {
+    //   key: 'loyaltyPointsService',
+    //   resolve: './src/modules/loyalty-points',
+    // },
+    // {
+    //   key: 'wishlistService',
+    //   resolve: './src/modules/wishlist',
+    // },
+    // {
+    //   key: 'productReviewsService',
+    //   resolve: './src/modules/product-reviews',
+    // },
+    // {
+    //   key: 'agenticCommerceService',
+    //   resolve: './src/modules/agentic-commerce',
+    // },
+    // {
+    //   key: 'customItemPricingService',
+    //   resolve: './src/modules/custom-item-pricing',
+    // },
+    // {
+    //   key: 'invoiceGenerationService',
+    //   resolve: './src/modules/invoice-generation',
+    // },
+    // {
+    //   key: 'firstPurchaseDiscountService',
+    //   resolve: './src/modules/first-purchase-discount',
+    // },
+    // {
+    //   key: 'metaProductFeedService',
+    //   resolve: './src/modules/meta-product-feed',
+    // },
+    // {
+    //   key: 'newsletterService',
+    //   resolve: './src/modules/newsletter',
+    // },
+    // {
+    //   key: 'phoneAuthService',
+    //   resolve: './src/modules/phone-auth',
+    // },
+    // {
+    //   key: 'productBuilderService',
+    //   resolve: './src/modules/product-builder',
+    // },
+    // {
+    //   key: 'quoteManagementService',
+    //   resolve: './src/modules/quote-management',
+    // },
+    // {
+    //   key: 'reorderService',
+    //   resolve: './src/modules/reorder',
+    // },
+    // {
+    //   key: 'savedPaymentMethodsService',
+    //   resolve: './src/modules/saved-payment-methods',
+    // },
+    // {
+    //   key: 'analyticsService',
+    //   resolve: './src/modules/analytics',
+    // }
   ],
   plugins: [
   ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
