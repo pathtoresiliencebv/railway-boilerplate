@@ -18,11 +18,6 @@ import {
   WORKER_MODE,
   MINIO_ENDPOINT,
   MINIO_ACCESS_KEY,
-  SHIPSTATION_API_KEY,
-  SHIPSTATION_API_SECRET,
-  SHIPSTATION_BASE_URL,
-  SHIPSTATION_WEIGHT_UNIT,
-  SHIPSTATION_DIMENSION_UNIT,
   MINIO_SECRET_KEY,
   MINIO_BUCKET,
   MEILISEARCH_HOST,
@@ -199,7 +194,7 @@ const medusaConfig = {
       },
     }] : []),
 
-    // Fulfillment Module with Manual and ShipStation Providers
+    // Fulfillment Module with Manual Provider
     {
       key: Modules.FULFILLMENT,
       resolve: '@medusajs/medusa/fulfillment',
@@ -209,18 +204,7 @@ const medusaConfig = {
             resolve: '@medusajs/medusa/fulfillment-manual',
             id: 'manual',
             options: {}
-          },
-          ...(SHIPSTATION_API_KEY && SHIPSTATION_API_SECRET ? [{
-            resolve: './src/modules/shipstation-fulfillment',
-            id: 'shipstation',
-            options: {
-              apiKey: SHIPSTATION_API_KEY,
-              apiSecret: SHIPSTATION_API_SECRET,
-              baseUrl: SHIPSTATION_BASE_URL || 'https://ssapi.shipstation.com',
-              weightUnit: SHIPSTATION_WEIGHT_UNIT || 'lb',
-              dimensionUnit: SHIPSTATION_DIMENSION_UNIT || 'in'
-            }
-          }] : [])
+          }
         ]
       }
     },
