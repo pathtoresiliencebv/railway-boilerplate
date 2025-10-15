@@ -1,6 +1,5 @@
-import { Module } from '@medusajs/utils'
 import LoyaltyPointsService from './service'
 
-export default Module("loyalty-pointsService", {
-  service: LoyaltyPointsService
-})
+export const LOYALTYPOINTSSERVICE_MODULE = 'loyalty-pointsService'
+
+export default LoyaltyPointsService
