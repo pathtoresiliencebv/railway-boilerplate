@@ -275,10 +275,6 @@ const medusaConfig = {
       resolve: './src/modules/saved-payment-methods',
     },
     {
-      key: 'analyticsService',
-      resolve: './src/modules/analytics',
-    },
-    {
       key: 'webhooksService',
       resolve: './src/modules/webhooks',
     }
