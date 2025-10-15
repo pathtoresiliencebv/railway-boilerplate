@@ -1,10 +1,10 @@
 {
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "cd storefront && ./install-deps.sh && yarn build"
+    "buildCommand": "cd storefront && npm install --legacy-peer-deps && npm run build"
   },
   "deploy": {
-    "startCommand": "cd storefront && yarn start",
+    "startCommand": "cd storefront && npm start",
     "healthcheckPath": "/",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",

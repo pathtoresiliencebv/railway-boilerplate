@@ -21,7 +21,7 @@ export const getProductsById = async function ({
         region_id: regionId,
         fields:
           '*variants.calculated_price,+variants.inventory_quantity,*variants,*variants.prices,*categories,+metadata',
-      },
+      } as any,
       { next: { tags: ['products'] } }
     )
     .then(({ products }) => products)
@@ -38,7 +38,7 @@ export const getProductByHandle = async function (
         region_id: regionId,
         fields:
           '*variants.calculated_price,+variants.inventory_quantity,*variants,*variants.prices,*categories,+metadata',
-      },
+      } as any,
       { next: { tags: ['products'] } }
     )
     .then(({ products }) => products[0])
@@ -137,7 +137,7 @@ export const getProductsListByCollectionId = async function ({
         region_id: region.id,
         fields:
           '*variants.calculated_price,+variants.inventory_quantity,*variants,*variants.prices',
-      },
+      } as any,
       { next: { tags: ['products'] } }
     )
     .then(({ products, count }) => {

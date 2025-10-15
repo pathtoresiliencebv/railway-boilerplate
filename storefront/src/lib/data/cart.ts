@@ -301,8 +301,14 @@ export async function initiatePaymentSession(
 ) {
   const authHeaders = await getAuthHeaders()
 
+  // Add missing promotions property to cart
+  const cartWithPromotions = {
+    ...cart,
+    promotions: (cart as any).promotions || []
+  }
+
   return sdk.store.payment
-    .initiatePaymentSession(cart, data, {}, authHeaders)
+    .initiatePaymentSession(cartWithPromotions as any, data, {}, authHeaders)
     .then((resp) => {
       revalidateTag('cart')
       return resp
