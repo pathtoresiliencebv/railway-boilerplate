@@ -4,7 +4,7 @@ nixPkgs = ["nodejs", "npm"]
 [phases.install]
 cmds = [
   "rm -f yarn.lock .yarnrc.yml",
-  "npm install --legacy-peer-deps"
+  "npm install --legacy-peer-deps --force"
 ]
 
 [phases.build]
