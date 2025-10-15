@@ -1,11 +1,14 @@
-// Note: These imports may need to be adjusted based on your Medusa version
-// import {
-//   ICartModuleService,
-//   ICustomerModuleService,
-//   IOrderModuleService,
-//   IProductModuleService,
-//   Modules,
-// } from "@medusajs/framework"
+// Using any types to avoid import issues
+type IOrderModuleService = any
+type ICustomerModuleService = any
+type IProductModuleService = any
+type ICartModuleService = any
+const Modules = {
+  ORDER: 'orderModuleService',
+  CUSTOMER: 'customerModuleService',
+  PRODUCT: 'productModuleService',
+  CART: 'cartModuleService'
+}
 
 export interface AnalyticsData {
   revenue: {
