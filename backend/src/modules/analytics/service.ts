@@ -4,7 +4,7 @@ import {
   IOrderModuleService,
   IProductModuleService,
   Modules,
-} from "@medusajs/types"
+} from "@medusajs/framework"
 
 export interface AnalyticsData {
   revenue: {

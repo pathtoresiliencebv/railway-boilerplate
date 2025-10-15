@@ -19,8 +19,8 @@ export async function GET(
     // Get orders for the period
     const orders = await orderModuleService.listOrders({
       created_at: {
-        $gte: startDate,
-        $lte: endDate
+        $gte: startDate.toISOString(),
+        $lte: endDate.toISOString()
       }
     })
 
@@ -87,7 +87,7 @@ export async function GET(
           id: productId,
           title: product?.title || 'Unknown Product',
           quantity,
-          revenue: quantity * Number(product?.variants?.[0]?.price || 0)
+          revenue: quantity * Number(product?.variants?.[0]?.calculated_amount || 0)
         }
       })
       .sort((a, b) => b.quantity - a.quantity)

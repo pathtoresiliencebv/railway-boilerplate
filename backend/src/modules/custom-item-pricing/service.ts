@@ -132,7 +132,7 @@ export default class CustomItemPricingService {
     
     try {
       const customer = await customerModuleService.retrieveCustomer(customerId)
-      return customer.metadata?.custom_pricing_rules || []
+      return (customer.metadata?.custom_pricing_rules as CustomPriceRule[]) || []
     } catch (error) {
       console.error('Error retrieving customer pricing rules:', error)
       return []

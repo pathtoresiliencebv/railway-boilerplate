@@ -113,10 +113,10 @@ export default class ReorderService {
       }
 
       await cartModuleService.addLineItems(cartId, lineItems.map(item => ({
-        variant_id: item.variantId,
+        variant_id: item.variant_id,
         quantity: item.quantity,
-        title: item.productName,
-        unit_price: item.unitPrice
+        title: `Product ${item.variant_id}`,
+        unit_price: 0
       })))
 
       // Update reorder usage

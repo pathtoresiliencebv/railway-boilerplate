@@ -97,7 +97,7 @@ export default class ProductBuilderService {
     
     try {
       const product = await productModuleService.retrieveProduct(productId)
-      const basePrice = Number(product.variants?.[0]?.price || 0)
+      const basePrice = Number(product.variants?.[0]?.calculated_amount || 0)
       
       // Calculate price modifiers based on options
       const priceModifiers = await this.calculatePriceModifiers(productId, options)
