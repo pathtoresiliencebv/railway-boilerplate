@@ -1,5 +1,9 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { ChartBar, TrendingUp, Users, ShoppingBag } from "@medusajs/icons"
+// Using simple icons instead of @medusajs/icons
+const ChartBar = () => <span>📊</span>
+const TrendingUp = () => <span>📈</span>
+const Users = () => <span>👥</span>
+const ShoppingBag = () => <span>🛍️</span>
 import { Container, Heading, Text, Badge, Card, Grid } from "@medusajs/ui"
 import { useState, useEffect } from "react"
 
