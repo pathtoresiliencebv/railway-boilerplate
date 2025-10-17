@@ -1,33 +1,16 @@
-'use client'
+"use client"
 
-import React, { useActionState, useEffect, useState } from 'react'
+import { Badge, Heading, Input, Label, Text, Tooltip } from "@medusajs/ui"
+import React from "react"
+import { useFormState } from "react-dom"
 
-import {
-  applyPromotions,
-  initiatePaymentSession,
-  submitPromotionForm,
-} from '@lib/data/cart'
-import { HttpTypes } from '@medusajs/types'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@modules/common/components/accordion'
-import { Box } from '@modules/common/components/box'
-import { Button } from '@modules/common/components/button'
-import { Heading } from '@modules/common/components/heading'
-import { Input } from '@modules/common/components/input'
-import { Label } from '@modules/common/components/label'
-import { toast } from '@modules/common/components/toast'
-import {
-  CheckCircleIcon,
-  ChevronDownIcon,
-  DiscountIcon,
-  TrashIcon,
-} from '@modules/common/icons'
-
-import { SubmitButton } from '../submit-button'
+import { applyPromotions, submitPromotionForm } from "@lib/data/cart"
+import { convertToLocale } from "@lib/util/money"
+import { InformationCircleSolid } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
+import Trash from "@modules/common/icons/trash"
+import ErrorMessage from "../error-message"
+import { SubmitButton } from "../submit-button"
 
 type DiscountCodeProps = {
   cart: HttpTypes.StoreCart & {
@@ -36,201 +19,157 @@ type DiscountCodeProps = {
 }
 
 const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
-  const [codeValue, setCodeValue] = React.useState('')
-  const [errorMessage, setErrorMessage] = React.useState('')
-  const [isRemoving, setIsRemoving] = React.useState(false)
-  const { promotions = [] } = cart
-  const [codes, setCodes] = useState(promotions)
-  const [codeChanged, setCodeChanged] = useState({ changed: false, code: '' })
+  const [isOpen, setIsOpen] = React.useState(false)
 
-  const activeSession = cart?.payment_collection?.payment_sessions?.find(
-    (paymentSession: any) => paymentSession.status === 'pending'
-  )
-
+  const { items = [], promotions = [] } = cart
   const removePromotionCode = async (code: string) => {
     const validPromotions = promotions.filter(
       (promotion) => promotion.code !== code
     )
 
-    setIsRemoving(true)
-
-    const validPromotionCodes = validPromotions
-      .filter((p) => p.code !== undefined)
-      .map((p) => p.code!)
-
-    await Promise.all([
-      applyPromotions(validPromotionCodes),
-      activeSession
-        ? initiatePaymentSession(cart, {
-            provider_id: activeSession.provider_id,
-          })
-        : Promise.resolve(),
-    ])
-
-    setIsRemoving(false)
-    setErrorMessage('')
-    setCodeChanged({ code, changed: true })
+    await applyPromotions(
+      validPromotions.filter((p) => p.code === undefined).map((p) => p.code!)
+    )
   }
 
   const addPromotionCode = async (formData: FormData) => {
-    setErrorMessage('')
-    const code = formData.get('code')
-
+    const code = formData.get("code")
     if (!code) {
-      setErrorMessage('Please enter code')
       return
     }
-
+    const input = document.getElementById("promotion-input") as HTMLInputElement
     const codes = promotions
-      .filter((p) => p.code !== undefined)
+      .filter((p) => p.code === undefined)
       .map((p) => p.code!)
-    codes.push(typeof code === 'string' ? code : JSON.stringify(code))
+    codes.push(code.toString())
 
-    await Promise.all([
-      applyPromotions(codes),
-      activeSession
-        ? initiatePaymentSession(cart, {
-            provider_id: activeSession.provider_id,
-          })
-        : Promise.resolve(),
-    ])
+    await applyPromotions(codes)
 
-    if (codeValue) {
-      setCodeValue('')
+    if (input) {
+      input.value = ""
     }
-    setCodeChanged({ code: code.toString(), changed: true })
   }
 
-  const [message] = useActionState(submitPromotionForm, null)
-
-  useEffect(() => {
-    if (!codeChanged.changed) return
-    if (codes.length < promotions.length) {
-      toast(
-        'success',
-        `The promotion "${codeChanged.code}" has been successfully applied!`
-      )
-    } else if (codes.length > promotions.length) {
-      toast(
-        'success',
-        `The promotion "${codeChanged.code}" has been successfully removed.`
-      )
-    } else if (
-      codes.length === promotions.length &&
-      promotions
-        .filter((p) => p.code !== undefined)
-        .map((p) => p.code!)
-        .includes(codeChanged.code)
-    ) {
-      toast(
-        'error',
-        `The promotion "${codeChanged.code}" has been already applied`
-      )
-    } else {
-      toast('error', `The promotion "${codeChanged.code}" was not found`)
-    }
-    setCodes(promotions)
-    setCodeChanged((prev) => {
-      return { ...prev, changed: false }
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [promotions])
+  const [message, formAction] = useFormState(submitPromotionForm, null)
 
   return (
-    <form
-      action={(a) => {
-        addPromotionCode(a)
-      }}
-    >
-      <Accordion
-        type="single"
-        collapsible
-        defaultValue={promotions.length > 0 ? 'discount' : undefined}
-        className="flex w-full flex-col gap-2"
-      >
-        <AccordionItem value="discount" className="bg-primary px-5 pb-3 pt-5">
-          <AccordionTrigger
-            className="text-basic-primary [&[data-state=open]>#chevronDown]:rotate-180"
-            data-testid="discount-code-accordion-trigger"
-          >
-            <Heading
-              className="flex items-center gap-2 text-left text-lg"
-              as="h3"
+    <div className="w-full bg-white flex flex-col">
+      <div className="txt-medium">
+        <form action={(a) => addPromotionCode(a)} className="w-full mb-5">
+          <Label className="flex gap-x-1 my-2 items-center">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              type="button"
+              className="txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+              data-testid="add-discount-button"
             >
-              <DiscountIcon />
-              Have promo code?
-            </Heading>
-            <div
-              id="chevronDown"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-action-primary duration-300 ease-in-out"
-            >
-              <ChevronDownIcon />
-            </div>
-          </AccordionTrigger>
-          <AccordionContent>
-            <Box className="flex flex-col gap-4">
-              {promotions.length > 0 ? (
-                promotions.map((promotion) => {
-                  return (
-                    <div
-                      className="flex items-center justify-between py-2"
-                      key={promotion.id}
-                    >
-                      <div className="flex gap-2">
-                        <CheckCircleIcon className="text-positive" />
-                        <Label className="text-md uppercase text-positive">
+              Add Promotion Code(s)
+            </button>
+
+            {/* <Tooltip content="You can add multiple promotion codes">
+              <InformationCircleSolid color="var(--fg-muted)" />
+            </Tooltip> */}
+          </Label>
+
+          {isOpen && (
+            <>
+              <div className="flex w-full gap-x-2">
+                <Input
+                  className="size-full"
+                  id="promotion-input"
+                  name="code"
+                  type="text"
+                  autoFocus={false}
+                  data-testid="discount-input"
+                />
+                <SubmitButton
+                  variant="secondary"
+                  data-testid="discount-apply-button"
+                >
+                  Apply
+                </SubmitButton>
+              </div>
+
+              <ErrorMessage
+                error={message}
+                data-testid="discount-error-message"
+              />
+            </>
+          )}
+        </form>
+
+        {promotions.length > 0 && (
+          <div className="w-full flex items-center">
+            <div className="flex flex-col w-full">
+              <Heading className="txt-medium mb-2">
+                Promotion(s) applied:
+              </Heading>
+
+              {promotions.map((promotion) => {
+                return (
+                  <div
+                    key={promotion.id}
+                    className="flex items-center justify-between w-full max-w-full mb-2"
+                    data-testid="discount-row"
+                  >
+                    <Text className="flex gap-x-1 items-baseline txt-small-plus w-4/5 pr-1">
+                      <span className="truncate" data-testid="discount-code">
+                        <Badge
+                          color={promotion.is_automatic ? "green" : "grey"}
+                          size="small"
+                        >
                           {promotion.code}
-                        </Label>
-                      </div>
-                      <Button
-                        variant="tonal"
-                        size="sm"
-                        withIcon
-                        isLoading={isRemoving}
-                        disabled={isRemoving}
+                        </Badge>{" "}
+                        (
+                        {promotion.application_method?.value !== undefined &&
+                          promotion.application_method.currency_code !==
+                            undefined && (
+                            <>
+                              {promotion.application_method.type ===
+                              "percentage"
+                                ? `${promotion.application_method.value}%`
+                                : convertToLocale({
+                                    amount: promotion.application_method.value,
+                                    currency_code:
+                                      promotion.application_method
+                                        .currency_code,
+                                  })}
+                            </>
+                          )}
+                        )
+                        {/* {promotion.is_automatic && (
+                          <Tooltip content="This promotion is automatically applied">
+                            <InformationCircleSolid className="inline text-zinc-400" />
+                          </Tooltip>
+                        )} */}
+                      </span>
+                    </Text>
+                    {!promotion.is_automatic && (
+                      <button
+                        className="flex items-center"
                         onClick={() => {
                           if (!promotion.code) {
                             return
                           }
+
                           removePromotionCode(promotion.code)
                         }}
-                        className="h-12 w-12 bg-transparent hover:bg-transparent"
-                        data-testid="remove-promotion-code-button"
+                        data-testid="remove-discount-button"
                       >
-                        <TrashIcon className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  )
-                })
-              ) : (
-                <div className="flex flex-col gap-2 pt-2">
-                  <Box className="flex w-full justify-between gap-3">
-                    <Box className="w-3/4">
-                      <Input
-                        name="code"
-                        error={errorMessage || message}
-                        placeholder="Enter promo code"
-                        value={codeValue}
-                        onChange={(e) => setCodeValue(e.target.value)}
-                        data-testid="promotion-code-input"
-                      />
-                    </Box>
-                    <Box className="flex w-1/4 justify-end">
-                      <SubmitButton
-                        data-testid="activate-promotion-code-button"
-                        variant="tonal"
-                      >
-                        Activate
-                      </SubmitButton>
-                    </Box>
-                  </Box>
-                </div>
-              )}
-            </Box>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </form>
+                        <Trash size={14} />
+                        <span className="sr-only">
+                          Remove discount code from order
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 

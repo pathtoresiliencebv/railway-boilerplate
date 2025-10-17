@@ -1,25 +1,19 @@
-import React from 'react'
-import { Metadata } from 'next'
+import { Metadata } from "next"
 
-import { getBaseURL } from '@lib/util/env'
-import Footer from '@modules/layout/templates/footer'
-import NavWrapper from '@modules/layout/templates/nav'
+import Footer from "@modules/layout/templates/footer"
+import Nav from "@modules/layout/templates/nav"
+import { getBaseURL } from "@lib/util/env"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
 }
 
-export default async function PageLayout(props: {
-  params: Promise<{ countryCode: string }>
-  children: React.ReactNode
-}) {
-  const { countryCode } = await props.params
-
+export default async function PageLayout(props: { children: React.ReactNode }) {
   return (
     <>
-      <NavWrapper countryCode={countryCode} />
+      <Nav />
       {props.children}
-      <Footer countryCode={countryCode} />
+      <Footer />
     </>
   )
 }

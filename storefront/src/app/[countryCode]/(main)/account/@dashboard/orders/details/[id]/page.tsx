@@ -1,13 +1,13 @@
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
 
-import { enrichLineItems } from '@lib/data/cart'
-import { retrieveOrder } from '@lib/data/orders'
-import { HttpTypes } from '@medusajs/types'
-import OrderDetailsTemplate from '@modules/order/templates/order-details-template'
+import OrderDetailsTemplate from "@modules/order/templates/order-details-template"
+import { retrieveOrder } from "@lib/data/orders"
+import { enrichLineItems } from "@lib/data/cart"
+import { HttpTypes } from "@medusajs/types"
 
 type Props = {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }
 
 async function getOrder(id: string) {
@@ -25,8 +25,7 @@ async function getOrder(id: string) {
   } as unknown as HttpTypes.StoreOrder
 }
 
-export async function generateMetadata(props: Props): Promise<Metadata> {
-  const params = await props.params
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const order = await getOrder(params.id).catch(() => null)
 
   if (!order) {
@@ -39,8 +38,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 }
 
-export default async function OrderDetailPage(props: Props) {
-  const params = await props.params
+export default async function OrderDetailPage({ params }: Props) {
   const order = await getOrder(params.id).catch(() => null)
 
   if (!order) {

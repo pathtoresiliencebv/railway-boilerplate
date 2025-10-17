@@ -1,38 +1,29 @@
-'use client'
+"use client"
 
-import React from 'react'
-
-import { Button } from '@modules/common/components/button'
-import { useFormStatus } from 'react-dom'
+import { Button } from "@medusajs/ui"
+import React from "react"
+import { useFormStatus } from "react-dom"
 
 export function SubmitButton({
   children,
-  variant = 'filled',
+  variant = "primary",
   className,
-  isLoading,
-  'data-testid': dataTestId,
+  "data-testid": dataTestId,
 }: {
   children: React.ReactNode
-  variant?:
-    | 'filled'
-    | 'ghost'
-    | 'tonal'
-    | 'text'
-    | 'destructive'
-    | 'icon'
-    | null
+  variant?: "primary" | "secondary" | "transparent" | "danger" | null
   className?: string
-  isLoading?: boolean
-  'data-testid'?: string
+  "data-testid"?: string
 }) {
   const { pending } = useFormStatus()
 
   return (
     <Button
+      size="large"
       className={className}
       type="submit"
-      isLoading={isLoading ?? pending}
-      variant={variant || 'filled'}
+      isLoading={pending}
+      variant={variant || "primary"}
       data-testid={dataTestId}
     >
       {children}

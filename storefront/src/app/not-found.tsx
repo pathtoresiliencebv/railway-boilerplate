@@ -1,28 +1,30 @@
-import { Metadata } from 'next'
-
-import { Button } from '@modules/common/components/button'
-import { Heading } from '@modules/common/components/heading'
-import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { Text } from '@modules/common/components/text'
+import { ArrowUpRightMini } from "@medusajs/icons"
+import { Text } from "@medusajs/ui"
+import { Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: '404',
-  description: 'Something went wrong',
+  title: "404",
+  description: "Something went wrong",
 }
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center gap-6">
-      <Text className="text-5xl font-semibold small:text-4xl">404</Text>
-      <Heading className="text-5xl small:text-4xl" as="h1">
-        Page not found
-      </Heading>
-      <Text className="text-secondary" size="md">
-        Sorry, we couldn’t find the page you’re looking for.
-      </Text>
-      <Button asChild>
-        <LocalizedClientLink href="/">Go to homepage</LocalizedClientLink>
-      </Button>
+    <div className="flex flex-col gap-4 items-center justify-center min-h-[calc(100vh-64px)]">
+      <h1 className="text-2xl-semi text-ui-fg-base">Page not found</h1>
+      <p className="text-small-regular text-ui-fg-base">
+        The page you tried to access does not exist.
+      </p>
+      <Link
+        className="flex gap-x-1 items-center group"
+        href="/"
+      >
+        <Text className="text-ui-fg-interactive">Go to frontpage</Text>
+        <ArrowUpRightMini
+          className="group-hover:rotate-45 ease-in-out duration-150"
+          color="var(--fg-interactive)"
+        />
+      </Link>
     </div>
   )
 }

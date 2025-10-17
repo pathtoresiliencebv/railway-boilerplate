@@ -1,26 +1,27 @@
-'use server'
+"use server"
 
-import { sdk } from '@lib/config'
-import medusaError from '@lib/util/medusa-error'
+import { sdk } from "@lib/config"
+import medusaError from "@lib/util/medusa-error"
+import { cache } from "react"
+import { getAuthHeaders } from "./cookies"
 
-import { getAuthHeaders } from './cookies'
-
-export async function retrieveOrder(id: string) {
-  const authHeaders = await getAuthHeaders()
+export const retrieveOrder = cache(async function (id: string) {
   return sdk.store.order
     .retrieve(
       id,
-      { fields: '*payment_collections.payments,+fulfillment_status' },
-      { next: { tags: ['order'] }, ...authHeaders }
+      { fields: "*payment_collections.payments" },
+      { next: { tags: ["order"] }, ...getAuthHeaders() }
     )
     .then(({ order }) => order)
     .catch((err) => medusaError(err))
-}
+})
 
-export async function listOrders(limit: number = 10, offset: number = 0) {
-  const authHeaders = await getAuthHeaders()
+export const listOrders = cache(async function (
+  limit: number = 10,
+  offset: number = 0
+) {
   return sdk.store.order
-    .list({ limit, offset }, { next: { tags: ['order'] }, ...authHeaders })
+    .list({ limit, offset }, { next: { tags: ["order"] }, ...getAuthHeaders() })
     .then(({ orders }) => orders)
     .catch((err) => medusaError(err))
-}
+})

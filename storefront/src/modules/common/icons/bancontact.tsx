@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react"
 
-import { IconProps } from 'types/icon'
+import { IconProps } from "types/icon"
 
-export const BancontactIcon: React.FC<IconProps> = ({
-  color = 'currentColor',
+const Ideal: React.FC<IconProps> = ({
+  size = "20",
+  color = "currentColor",
   ...attributes
 }) => {
   return (
@@ -21,3 +22,5 @@ export const BancontactIcon: React.FC<IconProps> = ({
     </svg>
   )
 }
+
+export default Ideal

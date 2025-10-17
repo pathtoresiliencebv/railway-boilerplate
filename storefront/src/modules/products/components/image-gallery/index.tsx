@@ -1,75 +1,39 @@
-'use client'
-
-import { useState } from 'react'
-
-import { cn } from '@lib/util/cn'
-import { HttpTypes } from '@medusajs/types'
-import { Button } from '@modules/common/components/button'
-
-import { LoadingImage } from '../product-tile/loading-image'
-import { MAX_INITIAL_IMAGES } from './consts'
-import { GalleryDialog } from './gallery-dialog'
-import ImageCarousel from './image-carousel'
+import { HttpTypes } from "@medusajs/types"
+import { Container } from "@medusajs/ui"
+import Image from "next/image"
 
 type ImageGalleryProps = {
   images: HttpTypes.StoreProductImage[]
-  title: string
 }
 
-const ImageGallery = ({ images, title }: ImageGalleryProps) => {
-  const [additionalImages, setAdditionalImages] = useState(0)
-  const [selectedImage, setSelectedImage] = useState(null)
-
-  const handleImageClick = (index) => {
-    setSelectedImage(index)
-  }
-
+const ImageGallery = ({ images }: ImageGalleryProps) => {
   return (
-    <div className="flex flex-col justify-center gap-4">
-      <div className="hidden grid-cols-2 gap-1 medium:grid">
-        {images
-          .slice(0, MAX_INITIAL_IMAGES + additionalImages)
-          .map((image, index) => (
-            <div
-              className={cn(
-                'relative w-full shrink-0',
-                index === 0
-                  ? 'col-span-2 aspect-[29/20] max-h-[540px]'
-                  : 'col-span-1 aspect-[29/34] max-h-[440px]'
-              )}
+    <div className="flex items-start relative">
+      <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
+        {images.map((image, index) => {
+          return (
+            <Container
               key={image.id}
+              className="relative aspect-[29/34] w-full overflow-hidden bg-ui-bg-subtle"
+              id={image.id}
             >
-              <LoadingImage
-                src={image.url}
-                alt={`${title} - product image`}
-                sizes="(max-width: 768px) 100vw, (max-width: 992px) 780px"
-                className="cursor-pointer object-cover"
-                loading={index === 0 ? 'eager' : 'lazy'}
-                onClick={() => handleImageClick(index)}
-              />
-            </div>
-          ))}
+              {!!image.url && (
+                <Image
+                  src={image.url}
+                  priority={index <= 2 ? true : false}
+                  className="absolute inset-0 rounded-rounded"
+                  alt={`Product image ${index + 1}`}
+                  fill
+                  sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
+                  style={{
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+            </Container>
+          )
+        })}
       </div>
-      {additionalImages + MAX_INITIAL_IMAGES < images.length && (
-        <Button
-          className="mx-auto hidden w-fit outline-none medium:flex"
-          variant="tonal"
-          size="sm"
-          onClick={() => {
-            additionalImages + MAX_INITIAL_IMAGES < images.length &&
-              setAdditionalImages((prev) => prev + 2)
-          }}
-        >
-          See more images
-        </Button>
-      )}
-      <GalleryDialog
-        activeImg={selectedImage}
-        onChange={setSelectedImage}
-        images={images}
-        title={title}
-      />
-      <ImageCarousel images={images} openDialog={setSelectedImage} />
     </div>
   )
 }

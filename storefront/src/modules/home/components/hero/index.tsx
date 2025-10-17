@@ -1,47 +1,34 @@
-import Image from 'next/image'
+import { Github } from "@medusajs/icons"
+import { Button, Heading } from "@medusajs/ui"
 
-import { Box } from '@modules/common/components/box'
-import { Button } from '@modules/common/components/button'
-import { Container } from '@modules/common/components/container'
-import { Heading } from '@modules/common/components/heading'
-import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { Text } from '@modules/common/components/text'
-import { HeroBanner } from 'types/strapi'
-
-const Hero = ({ data }: { data: HeroBanner }) => {
-  const { Headline, Text: text, CTA, Image: bannerImage } = data
-
+const Hero = () => {
   return (
-    <>
-      <Box className="h-[168px] max-h-[368px] w-full small:h-[368px] 2xl:h-[468px] 2xl:max-h-[468px]">
-        <Image
-          src={bannerImage.url}
-          alt={bannerImage.alternativeText ?? 'Banner image'}
-          className="h-full w-full object-cover"
-          width={1000}
-          height={600}
-          priority
-        />
-      </Box>
-      <Container className="flex flex-col gap-2 !py-6 small:gap-8 small:!py-10">
-        <Heading className="max-w-full text-4xl text-basic-primary small:max-w-[510px] medium:text-5xl">
-          {Headline}
-        </Heading>
-        <Box className="flex flex-col-reverse justify-between gap-8 medium:flex-row medium:items-center">
-          <Button asChild className="w-max">
-            <LocalizedClientLink href={CTA.BtnLink}>
-              {CTA.BtnText}
-            </LocalizedClientLink>
-          </Button>
-          <Text
-            size="lg"
-            className="max-w-full text-basic-primary medium:max-w-[410px] medium:text-end"
+    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
+      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
+        <span>
+          <Heading
+            level="h1"
+            className="text-3xl leading-10 text-ui-fg-base font-normal"
           >
-            {text}
-          </Text>
-        </Box>
-      </Container>
-    </>
+            Well done! You have successfully deployed your Medusa 2.0 store on Railway!
+          </Heading>
+          <Heading
+            level="h2"
+            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
+          >
+            Need help customizing your store?
+          </Heading>
+        </span>
+        <a
+          href="https://funkyton.com/medusajs-2-0-is-finally-here/"
+          target="_blank"
+        >
+          <h1 style={{ textDecoration: "underline" }}>
+            Visit the tutorial
+          </h1>
+        </a>
+      </div>
+    </div>
   )
 }
 

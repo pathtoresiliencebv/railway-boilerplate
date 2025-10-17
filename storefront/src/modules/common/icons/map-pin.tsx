@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react"
 
-import { IconProps } from 'types/icon'
+import { IconProps } from "types/icon"
 
-export const MapPinIcon: React.FC<IconProps> = ({
-  size = '20',
-  color = 'currentColor',
+const MapPin: React.FC<IconProps> = ({
+  size = "20",
+  color = "currentColor",
   ...attributes
 }) => {
   return (
@@ -33,3 +33,5 @@ export const MapPinIcon: React.FC<IconProps> = ({
     </svg>
   )
 }
+
+export default MapPin

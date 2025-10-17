@@ -1,14 +1,13 @@
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { Metadata } from "next"
 
-import { enrichLineItems } from '@lib/data/cart'
-import { retrieveOrder } from '@lib/data/orders'
-import { HttpTypes } from '@medusajs/types'
-import { OrderType } from '@modules/account/components/order-overview'
-import OrderCompletedTemplate from '@modules/order/templates/order-completed-template'
+import OrderCompletedTemplate from "@modules/order/templates/order-completed-template"
+import { notFound } from "next/navigation"
+import { enrichLineItems } from "@lib/data/cart"
+import { retrieveOrder } from "@lib/data/orders"
+import { HttpTypes } from "@medusajs/types"
 
 type Props = {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }
 
 async function getOrder(id: string) {
@@ -27,16 +26,15 @@ async function getOrder(id: string) {
 }
 
 export const metadata: Metadata = {
-  title: 'Order Confirmed',
-  description: 'You purchase was successful',
+  title: "Order Confirmed",
+  description: "You purchase was successful",
 }
 
-export default async function OrderConfirmedPage(props: Props) {
-  const params = await props.params
+export default async function OrderConfirmedPage({ params }: Props) {
   const order = await getOrder(params.id)
   if (!order) {
     return notFound()
   }
 
-  return <OrderCompletedTemplate order={order as OrderType} />
+  return <OrderCompletedTemplate order={order} />
 }

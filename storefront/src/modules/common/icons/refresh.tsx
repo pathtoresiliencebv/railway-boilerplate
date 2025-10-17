@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react"
 
-import { IconProps } from 'types/icon'
+import { IconProps } from "types/icon"
 
-export const RefreshIcon: React.FC<IconProps> = ({
-  size = '16',
-  color = 'currentColor',
+const Refresh: React.FC<IconProps> = ({
+  size = "16",
+  color = "currentColor",
   ...attributes
 }) => {
   return (
@@ -47,3 +47,5 @@ export const RefreshIcon: React.FC<IconProps> = ({
     </svg>
   )
 }
+
+export default Refresh

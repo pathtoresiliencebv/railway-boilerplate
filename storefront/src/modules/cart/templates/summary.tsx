@@ -1,11 +1,12 @@
-'use client'
+"use client"
 
-import { HttpTypes } from '@medusajs/types'
-import DiscountCode from '@modules/checkout/components/discount-code'
-import { Box } from '@modules/common/components/box'
-import { Button } from '@modules/common/components/button'
-import CartTotals from '@modules/common/components/cart-totals'
-import LocalizedClientLink from '@modules/common/components/localized-client-link'
+import { Button, Heading } from "@medusajs/ui"
+
+import CartTotals from "@modules/common/components/cart-totals"
+import Divider from "@modules/common/components/divider"
+import DiscountCode from "@modules/checkout/components/discount-code"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { HttpTypes } from "@medusajs/types"
 
 type SummaryProps = {
   cart: HttpTypes.StoreCart & {
@@ -15,11 +16,11 @@ type SummaryProps = {
 
 function getCheckoutStep(cart: HttpTypes.StoreCart) {
   if (!cart?.shipping_address?.address_1 || !cart.email) {
-    return 'address'
+    return "address"
   } else if (cart?.shipping_methods?.length === 0) {
-    return 'delivery'
+    return "delivery"
   } else {
-    return 'payment'
+    return "payment"
   }
 }
 
@@ -27,18 +28,20 @@ const Summary = ({ cart }: SummaryProps) => {
   const step = getCheckoutStep(cart)
 
   return (
-    <Box className="flex w-full flex-col gap-2 large:w-[326px] xl:w-[437px]">
+    <div className="flex flex-col gap-y-4">
+      <Heading level="h2" className="text-[2rem] leading-[2.75rem]">
+        Summary
+      </Heading>
       <DiscountCode cart={cart} />
-      <Box className="flex flex-col gap-5 bg-primary p-5">
-        <CartTotals totals={cart} />
-        <LocalizedClientLink
-          href={'/checkout?step=' + step}
-          data-testid="checkout-button"
-        >
-          <Button className="w-full">Proceed to checkout</Button>
-        </LocalizedClientLink>
-      </Box>
-    </Box>
+      <Divider />
+      <CartTotals totals={cart} />
+      <LocalizedClientLink
+        href={"/checkout?step=" + step}
+        data-testid="checkout-button"
+      >
+        <Button className="w-full h-10">Go to checkout</Button>
+      </LocalizedClientLink>
+    </div>
   )
 }
 

@@ -1,92 +1,91 @@
-'use client'
+import { XMarkMini } from "@medusajs/icons"
+import { FormEvent } from "react"
+import { useRouter } from "next/navigation"
 
-import React, { FormEvent, useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import SearchBoxWrapper, {
+  ControlledSearchBoxProps,
+} from "../search-box-wrapper"
 
-import { XMarkMini } from '@medusajs/icons'
-import { Box } from '@modules/common/components/box'
-import { Input } from '@modules/common/components/input'
-
-export const ControlledSearchBox = ({
-  countryCode,
-  open,
-  closeSearch,
-}: {
-  countryCode: string
-  open: boolean
-  closeSearch: () => void
-}) => {
-  const [query, setQuery] = useState<string | undefined>('')
-  const router = useRouter()
-  const inputRef = useRef(null)
-
+const ControlledSearchBox = ({
+  inputRef,
+  onChange,
+  onReset,
+  onSubmit,
+  placeholder,
+  value,
+  ...props
+}: ControlledSearchBoxProps) => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     event.stopPropagation()
-    if (query) {
-      const localSearches =
-        JSON.parse(localStorage.getItem('recentSearches')) || []
 
-      const updatedSearches = new Set([query, ...localSearches])
-
-      localStorage.setItem(
-        'recentSearches',
-        JSON.stringify(Array.from(updatedSearches).slice(0, 5))
-      )
-      router.push(`/${countryCode}/results/${query}`)
+    if (onSubmit) {
+      onSubmit(event)
     }
-    inputRef.current.blur()
-    setQuery('')
-    closeSearch()
+
+    if (inputRef.current) {
+      inputRef.current.blur()
+    }
   }
 
   const handleReset = (event: FormEvent) => {
     event.preventDefault()
     event.stopPropagation()
-    setQuery('')
+
+    onReset(event)
+
     if (inputRef.current) {
       inputRef.current.focus()
     }
   }
 
-  useEffect(() => {
-    if (inputRef.current && open) {
-      inputRef.current.focus()
-    }
-  }, [open])
-
-  const handleChange = (e) => {
-    setQuery(e.target.value)
-  }
-
   return (
-    <div className="relative w-full bg-primary large:mx-auto large:w-max">
+    <div {...props} className="w-full">
       <form action="" noValidate onSubmit={handleSubmit} onReset={handleReset}>
-        <Box className="flex w-full items-center justify-between border border-action-primary large:relative large:w-[400px] xl:w-[600px]">
-          <Input
+        <div className="flex items-center justify-between">
+          <input
             ref={inputRef}
             data-testid="search-input"
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
-            placeholder={'Search products...'}
+            placeholder={placeholder}
             spellCheck={false}
             type="search"
-            value={query}
-            onChange={handleChange}
-            className="w-full !border-none bg-transparent pr-5 text-lg placeholder:text-basic-primary focus:outline-none"
+            value={value}
+            onChange={onChange}
+            className="txt-compact-large h-6 placeholder:text-ui-fg-on-color placeholder:transition-colors focus:outline-none flex-1 bg-transparent "
           />
-          {query && (
+          {value && (
             <button
               onClick={handleReset}
               type="button"
-              className="absolute right-0 flex items-center justify-center gap-x-2 px-4 text-lg text-basic-primary focus:outline-none"
+              className="items-center justify-center text-ui-fg-on-color focus:outline-none gap-x-2 px-2 txt-compact-large flex"
             >
               <XMarkMini />
+              Cancel
             </button>
           )}
-        </Box>
+        </div>
       </form>
     </div>
   )
 }
+
+const SearchBox = () => {
+  const router = useRouter()
+
+  return (
+    <SearchBoxWrapper>
+      {(props) => {
+        return (
+          <>
+            <ControlledSearchBox {...props} />
+          </>
+        )
+      }}
+    </SearchBoxWrapper>
+  )
+}
+
+export default SearchBox

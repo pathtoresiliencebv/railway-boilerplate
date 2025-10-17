@@ -1,8 +1,10 @@
-import { HttpTypes } from '@medusajs/types'
-import { Text } from '@medusajs/ui'
-import { Box } from '@modules/common/components/box'
-import LineItemPrice from '@modules/common/components/line-item-price'
-import Thumbnail from '@modules/products/components/thumbnail'
+import { HttpTypes } from "@medusajs/types"
+import { Table, Text } from "@medusajs/ui"
+
+import LineItemOptions from "@modules/common/components/line-item-options"
+import LineItemPrice from "@modules/common/components/line-item-price"
+import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
+import Thumbnail from "@modules/products/components/thumbnail"
 
 type ItemProps = {
   item: HttpTypes.StoreCartLineItem | HttpTypes.StoreOrderLineItem
@@ -10,34 +12,38 @@ type ItemProps = {
 
 const Item = ({ item }: ItemProps) => {
   return (
-    <Box className="flex w-full bg-primary p-4" data-testid="product-row">
-      <div className="flex h-[90px] w-[90px]">
-        <Thumbnail thumbnail={item.thumbnail} size="square" />
-      </div>
-      <Box className="px-4 medium:flex-grow">
-        <Text size="base" className="text-secondary">
-          {item.product_collection}
+    <Table.Row className="w-full" data-testid="product-row">
+      <Table.Cell className="!pl-0 p-4 w-24">
+        <div className="flex w-16">
+          <Thumbnail thumbnail={item.thumbnail} size="square" />
+        </div>
+      </Table.Cell>
+
+      <Table.Cell className="text-left">
+        <Text
+          className="txt-medium-plus text-ui-fg-base"
+          data-testid="product-name"
+        >
+          {item.title}
         </Text>
-        <Text className="font-medium" data-testid="product-name">
-          {item.product_title}
-        </Text>
-        <Text size="base" className="text-secondary">
-          {item.quantity} {item.quantity > 1 ? 'items' : 'item'}
-        </Text>
-        <LineItemPrice
-          item={item}
-          style="tight"
-          className="mt-3 flex-col items-start gap-0 medium:hidden"
-        />
-      </Box>
-      <Box className="flex items-center justify-center">
-        <LineItemPrice
-          item={item}
-          style="tight"
-          className="hidden flex-col items-start gap-0 medium:block"
-        />
-      </Box>
-    </Box>
+        {item.variant && (
+          <LineItemOptions variant={item.variant} data-testid="product-variant" />
+        )}
+      </Table.Cell>
+
+      <Table.Cell className="!pr-0">
+        <span className="!pr-0 flex flex-col items-end h-full justify-center">
+          <span className="flex gap-x-1 ">
+            <Text className="text-ui-fg-muted">
+              <span data-testid="product-quantity">{item.quantity}</span>x{" "}
+            </Text>
+            <LineItemUnitPrice item={item} style="tight" />
+          </span>
+
+          <LineItemPrice item={item} style="tight" />
+        </span>
+      </Table.Cell>
+    </Table.Row>
   )
 }
 

@@ -1,20 +1,15 @@
-import { Suspense } from 'react'
+import React, { Suspense } from "react"
 
-import { retrieveCart } from '@lib/data/cart'
-import { getProductVariantsColors } from '@lib/data/fetch'
-import { getProductsListByCollectionId } from '@lib/data/products'
-import { HttpTypes } from '@medusajs/types'
-import { Box } from '@modules/common/components/box'
-import { Container } from '@modules/common/components/container'
-import ImageGallery from '@modules/products/components/image-gallery'
-import ProductTabs from '@modules/products/components/product-tabs'
-import ProductInfo from '@modules/products/templates/product-info'
-import SkeletonProductActions from '@modules/skeletons/components/skeleton-product-actions'
-import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
-
-import { ProductCarousel } from '../components/product-carousel'
-import ProductBreadcrumbs from './breadcrumbs'
-import ProductActionsWrapper from './product-actions-wrapper'
+import ImageGallery from "@modules/products/components/image-gallery"
+import ProductActions from "@modules/products/components/product-actions"
+import ProductOnboardingCta from "@modules/products/components/product-onboarding-cta"
+import ProductTabs from "@modules/products/components/product-tabs"
+import RelatedProducts from "@modules/products/components/related-products"
+import ProductInfo from "@modules/products/templates/product-info"
+import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
+import { notFound } from "next/navigation"
+import ProductActionsWrapper from "./product-actions-wrapper"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
@@ -22,59 +17,51 @@ type ProductTemplateProps = {
   countryCode: string
 }
 
-const ProductTemplate: React.FC<ProductTemplateProps> = async ({
+const ProductTemplate: React.FC<ProductTemplateProps> = ({
   product,
   region,
   countryCode,
-}: ProductTemplateProps) => {
-  const variantsColors = await getProductVariantsColors()
-
-  const { response: productsList } = await getProductsListByCollectionId({
-    collectionId: product.collection_id,
-    countryCode,
-    excludeProductId: product.id,
-  })
-
-  const cart = await retrieveCart()
+}) => {
+  if (!product || !product.id) {
+    return notFound()
+  }
 
   return (
     <>
-      <Container
-        className="relative flex flex-col gap-y-6 !py-8 small:gap-y-12"
+      <div
+        className="content-container flex flex-col small:flex-row small:items-start py-6 relative"
         data-testid="product-container"
       >
-        <ProductBreadcrumbs product={product} countryCode={countryCode} />
-        <Box className="relative flex flex-col gap-y-6 large:flex-row large:items-start large:gap-x-16 xl:gap-x-[120px]">
-          <Box className="relative block w-full">
-            <ImageGallery
-              title={product.title}
-              images={product?.images || []}
-            />
-          </Box>
-          <Box className="flex w-full flex-col gap-y-6 py-8 large:sticky large:top-24 large:max-w-[440px] large:py-0">
-            <ProductInfo product={product} />
-            <Suspense fallback={<SkeletonProductActions />}>
-              <ProductActionsWrapper
-                id={product.id}
+        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
+          <ProductInfo product={product} />
+          <ProductTabs product={product} />
+        </div>
+        <div className="block w-full relative">
+          <ImageGallery images={product?.images || []} />
+        </div>
+        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
+          <ProductOnboardingCta />
+          <Suspense
+            fallback={
+              <ProductActions
+                disabled={true}
+                product={product}
                 region={region}
-                cartItems={cart?.items}
-                colors={variantsColors.data}
               />
-            </Suspense>
-            <ProductTabs product={product} />
-          </Box>
-        </Box>
-      </Container>
-
-      {productsList.products.length > 0 && (
-        <Suspense fallback={<SkeletonProductsCarousel />}>
-          <ProductCarousel
-            products={productsList.products}
-            regionId={region.id}
-            title="Complete the look"
-          />
+            }
+          >
+            <ProductActionsWrapper id={product.id} region={region} />
+          </Suspense>
+        </div>
+      </div>
+      <div
+        className="content-container my-16 small:my-32"
+        data-testid="related-products-container"
+      >
+        <Suspense fallback={<SkeletonRelatedProducts />}>
+          <RelatedProducts product={product} countryCode={countryCode} />
         </Suspense>
-      )}
+      </div>
     </>
   )
 }

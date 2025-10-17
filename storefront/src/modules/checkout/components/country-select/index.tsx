@@ -1,20 +1,16 @@
-import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useRef } from "react"
 
-import { cn } from '@lib/util/cn'
-import { HttpTypes } from '@medusajs/types'
-import { Box } from '@modules/common/components/box'
-import { Label } from '@modules/common/components/label'
 import NativeSelect, {
   NativeSelectProps,
-} from '@modules/common/components/native-select'
+} from "@modules/common/components/native-select"
+import { HttpTypes } from "@medusajs/types"
 
 const CountrySelect = forwardRef<
   HTMLSelectElement,
   NativeSelectProps & {
     region?: HttpTypes.StoreRegion
-    error?: string
   }
->(({ placeholder = 'Country', region, error, defaultValue, ...props }, ref) => {
+>(({ placeholder = "Country", region, defaultValue, ...props }, ref) => {
   const innerRef = useRef<HTMLSelectElement>(null)
 
   useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
@@ -34,33 +30,21 @@ const CountrySelect = forwardRef<
   }, [region])
 
   return (
-    <Box className="flex flex-col gap-2">
-      {props.label && (
-        <Label
-          size="sm"
-          htmlFor={props.name}
-          className={cn('text-secondary', { 'text-negative': !!error })}
-        >
-          {props.label}
-        </Label>
-      )}
-      <NativeSelect
-        ref={innerRef}
-        placeholder={placeholder}
-        defaultValue={defaultValue}
-        error={error}
-        {...props}
-      >
-        {countryOptions?.map(({ value, label }, index) => (
-          <option key={index} value={value}>
-            {label}
-          </option>
-        ))}
-      </NativeSelect>
-    </Box>
+    <NativeSelect
+      ref={innerRef}
+      placeholder={placeholder}
+      defaultValue={defaultValue}
+      {...props}
+    >
+      {countryOptions?.map(({ value, label }, index) => (
+        <option key={index} value={value}>
+          {label}
+        </option>
+      ))}
+    </NativeSelect>
   )
 })
 
-CountrySelect.displayName = 'CountrySelect'
+CountrySelect.displayName = "CountrySelect"
 
 export default CountrySelect

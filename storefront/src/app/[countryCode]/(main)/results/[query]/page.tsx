@@ -1,45 +1,41 @@
-import { Metadata } from 'next'
+import { Metadata } from "next"
 
-import { getRegion } from '@lib/data/regions'
-import { safeDecodeURIComponent } from '@lib/util/safe-decode-uri'
-import SearchResultsTemplate from '@modules/search/templates/search-results-template'
+import SearchResultsTemplate from "@modules/search/templates/search-results-template"
+
+import { search } from "@modules/search/actions"
+import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
 export const metadata: Metadata = {
-  title: 'Search',
-  description: 'Explore all of our products.',
+  title: "Search",
+  description: "Explore all of our products.",
 }
 
 type Params = {
-  params: Promise<{ query: string; countryCode: string }>
-  searchParams: Promise<{
-    sortBy?: string
+  params: { query: string; countryCode: string }
+  searchParams: {
+    sortBy?: SortOptions
     page?: string
-    collection?: string
-    type?: string
-    material?: string
-    price?: string
-  }>
+  }
 }
 
-export default async function SearchResults(props: Params) {
-  const searchParams = await props.searchParams
-  const params = await props.params
-  const { sortBy, page, collection, type, material, price } = searchParams
-  const { query, countryCode } = params
-  const decodedQuery = safeDecodeURIComponent(query)
+export default async function SearchResults({ params, searchParams }: Params) {
+  const { query } = params
+  const { sortBy, page } = searchParams
 
-  const region = await getRegion(countryCode)
+  const hits = await search(query).then((data) => data)
+
+  const ids = hits
+    .map((h) => h.objectID || h.id)
+    .filter((id): id is string => {
+      return typeof id === "string"
+    })
 
   return (
     <SearchResultsTemplate
-      query={decodedQuery}
+      query={query}
+      ids={ids}
       sortBy={sortBy}
       page={page}
-      collection={collection?.split(',')}
-      type={type?.split(',')}
-      material={material?.split(',')}
-      price={price?.split(',')}
-      region={region}
       countryCode={params.countryCode}
     />
   )

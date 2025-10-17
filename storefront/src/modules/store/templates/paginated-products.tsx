@@ -1,52 +1,81 @@
-import { getRegion } from '@lib/data/regions'
-import { convertToLocale } from '@lib/util/money'
-import { ProductTile } from '@modules/products/components/product-tile'
-import { PRODUCT_LIMIT } from '@modules/search/actions'
-import { Pagination } from '@modules/store/components/pagination'
-import { SearchedProduct } from 'types/global'
+import { getProductsListWithSort } from "@lib/data/products"
+import { getRegion } from "@lib/data/regions"
+import ProductPreview from "@modules/products/components/product-preview"
+import { Pagination } from "@modules/store/components/pagination"
+import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+
+const PRODUCT_LIMIT = 12
+
+type PaginatedProductsParams = {
+  limit: number
+  collection_id?: string[]
+  category_id?: string[]
+  id?: string[]
+  order?: string
+}
 
 export default async function PaginatedProducts({
-  products,
-  total,
+  sortBy,
   page,
+  collectionId,
+  categoryId,
+  productsIds,
   countryCode,
 }: {
-  products: SearchedProduct[]
-  total: number
+  sortBy?: SortOptions
   page: number
+  collectionId?: string
+  categoryId?: string
+  productsIds?: string[]
   countryCode: string
 }) {
-  const totalPages = Math.ceil(total / PRODUCT_LIMIT)
+  const queryParams: PaginatedProductsParams = {
+    limit: 12,
+  }
+
+  if (collectionId) {
+    queryParams["collection_id"] = [collectionId]
+  }
+
+  if (categoryId) {
+    queryParams["category_id"] = [categoryId]
+  }
+
+  if (productsIds) {
+    queryParams["id"] = productsIds
+  }
+
+  if (sortBy === "created_at") {
+    queryParams["order"] = "created_at"
+  }
+
   const region = await getRegion(countryCode)
 
   if (!region) {
     return null
   }
 
+  let {
+    response: { products, count },
+  } = await getProductsListWithSort({
+    page,
+    queryParams,
+    sortBy,
+    countryCode,
+  })
+
+  const totalPages = Math.ceil(count / PRODUCT_LIMIT)
+
   return (
     <>
       <ul
-        className="grid w-full grid-cols-1 gap-x-2 gap-y-6 small:grid-cols-2 large:grid-cols-3"
+        className="grid grid-cols-2 w-full small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8"
         data-testid="products-list"
       >
         {products.map((p) => {
           return (
             <li key={p.id}>
-              <ProductTile
-                product={{
-                  id: p.id,
-                  created_at: p.created_at,
-                  title: p.title,
-                  handle: p.handle,
-                  thumbnail: p.thumbnail,
-                  calculatedPrice: convertToLocale({
-                    amount: Number(p.calculated_price),
-                    currency_code: region.currency_code,
-                  }),
-                  salePrice: p.sale_price,
-                }}
-                regionId={region.id}
-              />
+              <ProductPreview product={p} region={region} />
             </li>
           )
         })}

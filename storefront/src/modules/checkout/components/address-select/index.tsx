@@ -1,170 +1,115 @@
-import { useAddressSelect } from '@lib/hooks/use-address-select'
-import { userShippingAddressFormValidationSchema } from '@lib/util/validator'
-import { HttpTypes } from '@medusajs/types'
-import { Button } from '@modules/common/components/button'
-import {
-  Dialog,
-  DialogBody,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
-  DialogPortal,
-  DialogTitle,
-  DialogTrigger,
-} from '@modules/common/components/dialog'
-import { ArrowLeftIcon } from '@modules/common/icons'
-import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
-import { FormikProvider, useFormik } from 'formik'
+import { Listbox, Transition } from "@headlessui/react"
+import { ChevronUpDown } from "@medusajs/icons"
+import { clx } from "@medusajs/ui"
+import { Fragment, useMemo } from "react"
 
-import EditAddressForm from '../edit-address-form'
-import NewAddressForm from '../new-address-form'
-import AddressesList from './addresses-list'
+import Radio from "@modules/common/components/radio"
+import compareAddresses from "@lib/util/compare-addresses"
+import { HttpTypes } from "@medusajs/types"
 
 type AddressSelectProps = {
   addresses: HttpTypes.StoreCustomerAddress[]
   addressInput: HttpTypes.StoreCartAddress | null
-  cart: HttpTypes.StoreCart | null
   onSelect: (
     address: HttpTypes.StoreCartAddress | undefined,
     email?: string
   ) => void
 }
 
-const AddressSelect: React.FC<AddressSelectProps> = ({
+const AddressSelect = ({
   addresses,
   addressInput,
-  cart,
   onSelect,
-}) => {
-  const {
-    formRef,
-    editFormRef,
-    isOpen,
-    choosenAddressId,
-    setChoosenAddressId,
-    editAddress,
-    setEditAddress,
-    editingSuccessState,
-    editingAddress,
-    addNewAddress,
-    setAddNewAddress,
-    addingSuccessState,
-    addFormState,
-    updateFormState,
-    handleOpenDialogChange,
-    handleSaveClick,
-    handleEditAddress,
-    selectedAddress,
-  } = useAddressSelect(addresses, addressInput, cart, onSelect)
-
-  const defaultInitialValues = {
-    first_name: '',
-    last_name: '',
-    address_1: '',
-    city: '',
-    country_code: '',
-    postal_code: '',
-    phone: '',
-    company: '',
-    is_default_shipping: false,
-    province: '',
+}: AddressSelectProps) => {
+  const handleSelect = (id: string) => {
+    const savedAddress = addresses.find((a) => a.id === id)
+    if (savedAddress) {
+      onSelect(savedAddress as HttpTypes.StoreCartAddress)
+    }
   }
 
-  const formik = useFormik({
-    initialValues: editingAddress ?? defaultInitialValues,
-    validationSchema: userShippingAddressFormValidationSchema,
-    enableReinitialize: true,
-    onSubmit: async () => {
-      await formik.validateForm()
-
-      if (formik.isValid) {
-        handleSaveClick()
-      }
-    },
-    validateOnChange: false,
-  })
-
-  const handleSubmit = async () => await formik.handleSubmit()
+  const selectedAddress = useMemo(() => {
+    return addresses.find((a) => compareAddresses(a, addressInput))
+  }, [addresses, addressInput])
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenDialogChange}>
-      <DialogTrigger asChild>
-        <Button variant="tonal" size="sm" data-testid="change-address-button">
-          Change
-        </Button>
-      </DialogTrigger>
-      <DialogPortal>
-        <DialogOverlay />
-        <DialogContent
-          className="max-h-full max-w-[600px] !rounded-none small:max-h-[654px]"
-          aria-describedby={undefined}
+    <Listbox onChange={handleSelect} value={selectedAddress?.id}>
+      <div className="relative">
+        <Listbox.Button
+          className="relative w-full flex justify-between items-center px-4 py-[10px] text-left bg-white cursor-default focus:outline-none border rounded-rounded focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-gray-300 focus-visible:ring-offset-2 focus-visible:border-gray-300 text-base-regular"
+          data-testid="shipping-address-select"
         >
-          <DialogHeader className="flex items-center gap-4 text-xl text-basic-primary small:text-2xl">
-            {addNewAddress && (
-              <Button
-                variant="icon"
-                size="sm"
-                className="w-max"
-                withIcon
-                onClick={() => setAddNewAddress(false)}
-              >
-                <ArrowLeftIcon />
-              </Button>
-            )}
-            {addNewAddress
-              ? 'Add new shipping address'
-              : editAddress
-                ? 'Edit shipping address'
-                : 'Select shipping address'}
-            <DialogClose className="right-4" />
-          </DialogHeader>
-          <VisuallyHidden.Root>
-            <DialogTitle>Select address modal</DialogTitle>
-          </VisuallyHidden.Root>
-          <DialogBody className="flex flex-col gap-6 overflow-y-auto p-4 small:p-5">
-            <FormikProvider value={formik}>
-              {addNewAddress ? (
-                <NewAddressForm
-                  ref={formRef}
-                  region={cart?.region}
-                  formState={addFormState}
-                />
-              ) : editAddress ? (
-                <EditAddressForm
-                  ref={editFormRef}
-                  address={editingAddress}
-                  region={cart?.region}
-                  formState={updateFormState}
-                />
-              ) : (
-                <AddressesList
-                  addresses={addresses}
-                  choosenAddressId={choosenAddressId}
-                  setChoosenAddressId={setChoosenAddressId}
-                  selectedAddress={selectedAddress}
-                  handleEditAddress={handleEditAddress}
-                  setEditAddress={setEditAddress}
-                  setAddNewAddress={setAddNewAddress}
-                  resetForm={formik.resetForm}
-                />
-              )}
-            </FormikProvider>
-          </DialogBody>
-          <DialogFooter>
-            <Button
-              className="w-full"
-              isLoading={addingSuccessState || editingSuccessState}
-              onClick={handleSubmit}
-              type="button"
-            >
-              Save
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </DialogPortal>
-    </Dialog>
+          {({ open }) => (
+            <>
+              <span className="block truncate">
+                {selectedAddress
+                  ? selectedAddress.address_1
+                  : "Choose an address"}
+              </span>
+              <ChevronUpDown
+                className={clx("transition-rotate duration-200", {
+                  "transform rotate-180": open,
+                })}
+              />
+            </>
+          )}
+        </Listbox.Button>
+        <Transition
+          as={Fragment}
+          leave="transition ease-in duration-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <Listbox.Options
+            className="absolute z-20 w-full overflow-auto text-small-regular bg-white border border-top-0 max-h-60 focus:outline-none sm:text-sm"
+            data-testid="shipping-address-options"
+          >
+            {addresses.map((address) => {
+              return (
+                <Listbox.Option
+                  key={address.id}
+                  value={address.id}
+                  className="cursor-default select-none relative pl-6 pr-10 hover:bg-gray-50 py-4"
+                  data-testid="shipping-address-option"
+                >
+                  <div className="flex gap-x-4 items-start">
+                    <Radio
+                      checked={selectedAddress?.id === address.id}
+                      data-testid="shipping-address-radio"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-left text-base-semi">
+                        {address.first_name} {address.last_name}
+                      </span>
+                      {address.company && (
+                        <span className="text-small-regular text-ui-fg-base">
+                          {address.company}
+                        </span>
+                      )}
+                      <div className="flex flex-col text-left text-base-regular mt-2">
+                        <span>
+                          {address.address_1}
+                          {address.address_2 && (
+                            <span>, {address.address_2}</span>
+                          )}
+                        </span>
+                        <span>
+                          {address.postal_code}, {address.city}
+                        </span>
+                        <span>
+                          {address.province && `${address.province}, `}
+                          {address.country_code?.toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Listbox.Option>
+              )
+            })}
+          </Listbox.Options>
+        </Transition>
+      </div>
+    </Listbox>
   )
 }
 

@@ -1,14 +1,12 @@
-'use client'
+"use client"
 
-import React from 'react'
-
-import { convertToLocale } from '@lib/util/money'
-import { Box } from '@modules/common/components/box'
-import Divider from '@modules/common/components/divider'
+import { convertToLocale } from "@lib/util/money"
+import { InformationCircleSolid } from "@medusajs/icons"
+import { Tooltip } from "@medusajs/ui"
+import React from "react"
 
 type CartTotalsProps = {
   totals: {
-    item_subtotal?: number | null
     total?: number | null
     subtotal?: number | null
     tax_total?: number | null
@@ -23,69 +21,76 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const {
     currency_code,
     total,
+    subtotal,
     tax_total,
     shipping_total,
     discount_total,
-    item_subtotal,
+    gift_card_total,
   } = totals
 
   return (
-    <Box className="flex flex-col gap-4 text-md text-secondary small:gap-5">
-      <Box className="flex flex-col gap-2">
-        <Box className="flex items-center justify-between">
-          <span className="flex items-center gap-x-1">
+    <div>
+      <div className="flex flex-col gap-y-2 txt-medium text-ui-fg-subtle ">
+        <div className="flex items-center justify-between">
+          <span className="flex gap-x-1 items-center">
             Subtotal (excl. shipping and taxes)
           </span>
-          <span
-            data-value={item_subtotal || 0}
-            className="text-lg text-basic-primary"
-          >
-            {convertToLocale({ amount: item_subtotal ?? 0, currency_code })}
+          <span data-testid="cart-subtotal" data-value={subtotal || 0}>
+            {convertToLocale({ amount: subtotal ?? 0, currency_code })}
           </span>
-        </Box>
+        </div>
         {!!discount_total && (
-          <Box className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <span>Discount</span>
             <span
-              className="text-secondary"
+              className="text-ui-fg-interactive"
               data-testid="cart-discount"
               data-value={discount_total || 0}
             >
-              -{' '}
+              -{" "}
               {convertToLocale({ amount: discount_total ?? 0, currency_code })}
             </span>
-          </Box>
+          </div>
         )}
-        <Box className="flex items-center justify-between">
-          <span>Delivery</span>
-          <span
-            className="text-lg text-basic-primary"
-            data-value={shipping_total || 0}
-          >
+        <div className="flex items-center justify-between">
+          <span>Shipping</span>
+          <span data-testid="cart-shipping" data-value={shipping_total || 0}>
             {convertToLocale({ amount: shipping_total ?? 0, currency_code })}
           </span>
-        </Box>
-        <Box className="flex items-center justify-between">
-          <span className="flex items-center gap-x-1">Taxes</span>
-          <span
-            data-value={tax_total || 0}
-            className="text-lg text-basic-primary"
-          >
+        </div>
+        <div className="flex justify-between">
+          <span className="flex gap-x-1 items-center ">Taxes</span>
+          <span data-testid="cart-taxes" data-value={tax_total || 0}>
             {convertToLocale({ amount: tax_total ?? 0, currency_code })}
           </span>
-        </Box>
-      </Box>
-      <Divider />
-      <Box className="flex items-center justify-between">
+        </div>
+        {!!gift_card_total && (
+          <div className="flex items-center justify-between">
+            <span>Gift card</span>
+            <span
+              className="text-ui-fg-interactive"
+              data-testid="cart-gift-card-amount"
+              data-value={gift_card_total || 0}
+            >
+              -{" "}
+              {convertToLocale({ amount: gift_card_total ?? 0, currency_code })}
+            </span>
+          </div>
+        )}
+      </div>
+      <div className="h-px w-full border-b border-gray-200 my-4" />
+      <div className="flex items-center justify-between text-ui-fg-base mb-2 txt-medium ">
         <span>Total</span>
         <span
-          className="text-xl font-semibold text-basic-primary"
+          className="txt-xlarge-plus"
+          data-testid="cart-total"
           data-value={total || 0}
         >
           {convertToLocale({ amount: total ?? 0, currency_code })}
         </span>
-      </Box>
-    </Box>
+      </div>
+      <div className="h-px w-full border-b border-gray-200 mt-4" />
+    </div>
   )
 }
 

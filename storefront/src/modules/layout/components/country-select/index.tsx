@@ -1,13 +1,13 @@
-'use client'
+"use client"
 
-import { Fragment, useEffect, useMemo, useState } from 'react'
-import { useParams, usePathname } from 'next/navigation'
+import { Listbox, Transition } from "@headlessui/react"
+import { Fragment, useEffect, useMemo, useState } from "react"
+import ReactCountryFlag from "react-country-flag"
 
-import { Listbox, Transition } from '@headlessui/react'
-import { updateRegion } from '@lib/data/cart'
-import { StateType } from '@lib/hooks/use-toggle-state'
-import { HttpTypes } from '@medusajs/types'
-import ReactCountryFlag from 'react-country-flag'
+import { StateType } from "@lib/hooks/use-toggle-state"
+import { useParams, usePathname } from "next/navigation"
+import { updateRegion } from "@lib/data/cart"
+import { HttpTypes } from "@medusajs/types"
 
 type CountryOption = {
   country: string
@@ -41,7 +41,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
         }))
       })
       .flat()
-      .sort((a, b) => (a?.label ?? '').localeCompare(b?.label ?? ''))
+      .sort((a, b) => (a?.label ?? "").localeCompare(b?.label ?? ""))
   }, [regions])
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
             : undefined
         }
       >
-        <Listbox.Button className="w-full py-1">
+        <Listbox.Button className="py-1 w-full">
           <div className="txt-compact-small flex items-start gap-x-2">
             <span>Shipping to:</span>
             {current && (
@@ -75,17 +75,17 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
                 <ReactCountryFlag
                   svg
                   style={{
-                    width: '16px',
-                    height: '16px',
+                    width: "16px",
+                    height: "16px",
                   }}
-                  countryCode={current.country ?? ''}
+                  countryCode={current.country ?? ""}
                 />
                 {current.label}
               </span>
             )}
           </div>
         </Listbox.Button>
-        <div className="relative flex w-full min-w-[320px]">
+        <div className="flex relative w-full min-w-[320px]">
           <Transition
             show={state}
             as={Fragment}
@@ -94,7 +94,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
             leaveTo="opacity-0"
           >
             <Listbox.Options
-              className="text-small-regular no-scrollbar rounded-rounded absolute -bottom-[calc(100%-36px)] left-0 z-[900] max-h-[442px] w-full overflow-y-scroll bg-white uppercase text-black drop-shadow-md xsmall:left-auto xsmall:right-0"
+              className="absolute -bottom-[calc(100%-36px)] left-0 xsmall:left-auto xsmall:right-0 max-h-[442px] overflow-y-scroll z-[900] bg-white drop-shadow-md text-small-regular uppercase text-black no-scrollbar rounded-rounded w-full"
               static
             >
               {options?.map((o, index) => {
@@ -102,16 +102,16 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
                   <Listbox.Option
                     key={index}
                     value={o}
-                    className="flex cursor-pointer items-center gap-x-2 px-3 py-2 hover:bg-gray-200"
+                    className="py-2 hover:bg-gray-200 px-3 cursor-pointer flex items-center gap-x-2"
                   >
                     <ReactCountryFlag
                       svg
                       style={{
-                        width: '16px',
-                        height: '16px',
+                        width: "16px",
+                        height: "16px",
                       }}
-                      countryCode={o?.country ?? ''}
-                    />{' '}
+                      countryCode={o?.country ?? ""}
+                    />{" "}
                     {o?.label}
                   </Listbox.Option>
                 )

@@ -1,11 +1,10 @@
-import { notFound } from 'next/navigation'
-import { NextRequest, NextResponse } from 'next/server'
-
-import { HttpTypes } from '@medusajs/types'
+import { HttpTypes } from "@medusajs/types"
+import { notFound } from "next/navigation"
+import { NextRequest, NextResponse } from "next/server"
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
-const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || 'us'
+const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "us"
 
 const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
@@ -22,11 +21,11 @@ async function getRegionMap() {
     // Fetch regions from Medusa. We can't use the JS client here because middleware is running on Edge and the client needs a Node environment.
     const { regions } = await fetch(`${BACKEND_URL}/store/regions`, {
       headers: {
-        'x-publishable-api-key': PUBLISHABLE_API_KEY!,
+        "x-publishable-api-key": PUBLISHABLE_API_KEY!,
       },
       next: {
         revalidate: 3600,
-        tags: ['regions'],
+        tags: ["regions"],
       },
     }).then((res) => res.json())
 
@@ -37,7 +36,7 @@ async function getRegionMap() {
     // Create a map of country codes to regions.
     regions.forEach((region: HttpTypes.StoreRegion) => {
       region.countries?.forEach((c) => {
-        regionMapCache.regionMap.set(c.iso_2 ?? '', region)
+        regionMapCache.regionMap.set(c.iso_2 ?? "", region)
       })
     })
 
@@ -52,7 +51,7 @@ async function getRegionMap() {
  * @param request
  * @param response
  */
-function getCountryCode(
+async function getCountryCode(
   request: NextRequest,
   regionMap: Map<string, HttpTypes.StoreRegion | number>
 ) {
@@ -60,10 +59,10 @@ function getCountryCode(
     let countryCode
 
     const vercelCountryCode = request.headers
-      .get('x-vercel-ip-country')
+      .get("x-vercel-ip-country")
       ?.toLowerCase()
 
-    const urlCountryCode = request.nextUrl.pathname.split('/')[1]?.toLowerCase()
+    const urlCountryCode = request.nextUrl.pathname.split("/")[1]?.toLowerCase()
 
     if (urlCountryCode && regionMap.has(urlCountryCode)) {
       countryCode = urlCountryCode
@@ -77,9 +76,9 @@ function getCountryCode(
 
     return countryCode
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       console.error(
-        'Middleware.ts: Error getting the country code. Did you set up regions in your Medusa Admin and define a NEXT_PUBLIC_MEDUSA_BACKEND_URL environment variable?'
+        "Middleware.ts: Error getting the country code. Did you set up regions in your Medusa Admin and define a NEXT_PUBLIC_MEDUSA_BACKEND_URL environment variable?"
       )
     }
   }
@@ -90,18 +89,18 @@ function getCountryCode(
  */
 export async function middleware(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
-  const isOnboarding = searchParams.get('onboarding') === 'true'
-  const cartId = searchParams.get('cart_id')
-  const checkoutStep = searchParams.get('step')
-  const onboardingCookie = request.cookies.get('_medusa_onboarding')
-  const cartIdCookie = request.cookies.get('_medusa_cart_id')
+  const isOnboarding = searchParams.get("onboarding") === "true"
+  const cartId = searchParams.get("cart_id")
+  const checkoutStep = searchParams.get("step")
+  const onboardingCookie = request.cookies.get("_medusa_onboarding")
+  const cartIdCookie = request.cookies.get("_medusa_cart_id")
 
   const regionMap = await getRegionMap()
 
   const countryCode = regionMap && (await getCountryCode(request, regionMap))
 
   const urlHasCountryCode =
-    countryCode && request.nextUrl.pathname.split('/')[1].includes(countryCode)
+    countryCode && request.nextUrl.pathname.split("/")[1].includes(countryCode)
 
   // check if one of the country codes is in the url
   if (
@@ -113,9 +112,9 @@ export async function middleware(request: NextRequest) {
   }
 
   const redirectPath =
-    request.nextUrl.pathname === '/' ? '' : request.nextUrl.pathname
+    request.nextUrl.pathname === "/" ? "" : request.nextUrl.pathname
 
-  const queryString = request.nextUrl.search ? request.nextUrl.search : ''
+  const queryString = request.nextUrl.search ? request.nextUrl.search : ""
 
   let redirectUrl = request.nextUrl.href
 
@@ -131,19 +130,17 @@ export async function middleware(request: NextRequest) {
   if (cartId && !checkoutStep) {
     redirectUrl = `${redirectUrl}&step=address`
     response = NextResponse.redirect(`${redirectUrl}`, 307)
-    response.cookies.set('_medusa_cart_id', cartId, { maxAge: 60 * 60 * 24 })
+    response.cookies.set("_medusa_cart_id", cartId, { maxAge: 60 * 60 * 24 })
   }
 
   // Set a cookie to indicate that we're onboarding. This is used to show the onboarding flow.
   if (isOnboarding) {
-    response.cookies.set('_medusa_onboarding', 'true', {
-      maxAge: 60 * 60 * 24,
-    })
+    response.cookies.set("_medusa_onboarding", "true", { maxAge: 60 * 60 * 24 })
   }
 
   return response
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|favicon.ico).*)'],
+  matcher: ["/((?!api|_next/static|favicon.ico|.*\\.png|.*\\.jpg|.*\\.gif|.*\\.svg).*)"], // prevents redirecting on static files
 }
